@@ -43,6 +43,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/log_in_image">
 
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:passwordToggleEnabled="false"
+            app:hintEnabled="true"
+            app:passwordToggleTint="@color/color_primary">
+
         <EditText
             android:id="@+id/et_log_in_email"
             android:layout_width="match_parent"
@@ -52,18 +60,28 @@
             android:inputType="textEmailAddress"
             android:maxLines="1"
             android:paddingHorizontal="16dp" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
-            android:id="@+id/et_log_in_password"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:background="@drawable/input_bg_shape"
-            android:hint="Password"
-            android:inputType="textPassword"
-            android:maxLength="16"
-            android:maxLines="1"
-            android:paddingHorizontal="16dp" />
+            app:passwordToggleEnabled="true"
+            app:hintEnabled="true"
+            app:passwordToggleTint="@color/color_primary">
+
+            <EditText
+                android:id="@+id/et_log_in_password"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/input_bg_shape"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:maxLength="16"
+                android:maxLines="1"
+                android:paddingHorizontal="16dp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/btn_proceed_log_in"
