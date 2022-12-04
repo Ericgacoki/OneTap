@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.ericdev.goshopping.databinding.FragmentViewpagerBinding
 import com.ericdev.goshopping.feature_onboarding.presentation.adapter.ViewPagerAdapter
+import com.google.android.material.tabs.TabLayoutMediator
 
 class ViewPagerFragment : Fragment() {
     lateinit var binding: FragmentViewpagerBinding
@@ -29,7 +30,14 @@ class ViewPagerFragment : Fragment() {
             lifecycle
         )
 
-        binding.onBoardingViewpager.adapter = viewPagerAdapter
+        val pagerIndicator = binding.pagerIndicator
+        val viewPager = binding.onBoardingViewpager.also {
+            it.adapter = viewPagerAdapter
+        }
+
+        TabLayoutMediator(pagerIndicator, viewPager){tab, position ->
+
+        }.attach()
 
         return binding.root
     }
