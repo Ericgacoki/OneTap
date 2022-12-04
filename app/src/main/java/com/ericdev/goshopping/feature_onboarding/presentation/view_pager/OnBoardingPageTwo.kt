@@ -6,17 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.Fragment
-import com.ericdev.goshopping.databinding.OnboardingViewPagerPage3Binding
+import com.ericdev.goshopping.databinding.OnboardingViewPagerPage2Binding
 
-class OnBoardingViewPagerPage3 : Fragment() {
-    lateinit var binding: OnboardingViewPagerPage3Binding
+class OnBoardingPageTwo : Fragment() {
+    lateinit var binding: OnboardingViewPagerPage2Binding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = OnboardingViewPagerPage3Binding.inflate(layoutInflater)
+        binding = OnboardingViewPagerPage2Binding.inflate(layoutInflater)
         return binding.root
     }
 }

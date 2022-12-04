@@ -18,9 +18,9 @@ class ViewPagerFragment : Fragment() {
         binding = FragmentViewpagerBinding.inflate(layoutInflater)
 
         val onBoardingFragments = arrayListOf<Fragment>(
-            OnBoardingViewPagerPage1(),
-            OnBoardingViewPagerPage2(),
-            OnBoardingViewPagerPage3(),
+            OnBoardingPageOne(),
+            OnBoardingPageTwo(),
+            OnBoardingPageThree()
         )
 
         val viewPagerAdapter = ViewPagerAdapter(
