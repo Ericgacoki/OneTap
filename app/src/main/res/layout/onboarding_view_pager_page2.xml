@@ -2,30 +2,32 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
 
     <ImageView
-        android:id="@+id/bg_image_page1"
+        android:id="@+id/bg_image_page2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/page_1" />
+        android:src="@drawable/page_2" />
 
     <View
-        android:id="@+id/translucent_bg_page1"
+        android:id="@+id/translucent_bg_page2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#7A000000" />
 
     <TextView
-        android:id="@+id/page1_text"
+        android:id="@+id/page2_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:textStyle="bold"
-        android:text="LIVE YOUR PERFECT"
+        android:layout_marginHorizontal="24dp"
+        android:text="KEEP YOUR OWN PACE"
+        android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="48dp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,24 +35,25 @@
         app:layout_constraintVertical_bias=".175" />
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/btn_skip_page1"
+        android:id="@+id/btn_skip_page2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="#80FFFFFF"
+        app:cardCornerRadius="48dp"
+        app:cardElevation="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/page1_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias=".92"
-        app:layout_constraintVertical_bias=".92"
-        app:cardCornerRadius="48dp">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/page2_text"
+        app:layout_constraintVertical_bias=".92">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:paddingVertical="16dp"
-            android:paddingHorizontal="32dp">
+            android:paddingHorizontal="32dp"
+            android:paddingVertical="12dp">
 
             <TextView
                 android:layout_width="wrap_content"

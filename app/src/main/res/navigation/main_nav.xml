@@ -3,11 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_nav"
-    app:startDestination="@id/firstOnBoardingFragment">
+    app:startDestination="@id/viewPagerFragment">
+
 
     <fragment
-        android:id="@+id/firstOnBoardingFragment"
-        android:name="com.ericdev.goshopping.feature_onboarding.presentation.OnBoardingFragment"
-        android:label="fragment_first_onboarding"
-        tools:layout="@layout/fragment_onboarding" />
+        android:id="@+id/viewPagerFragment"
+        android:name="com.ericdev.goshopping.feature_onboarding.presentation.view_pager.ViewPagerFragment"
+        android:label="fragment_viewpager"
+        tools:layout="@layout/fragment_viewpager" />
 </navigation>
