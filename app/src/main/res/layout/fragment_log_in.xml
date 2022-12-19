@@ -23,7 +23,7 @@
         android:layout_marginEnd="32dp"
         android:text="LOG IN"
         android:textColor="@color/white"
-        android:textSize="32dp"
+        android:textSize="32sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/log_in_image"
         app:layout_constraintEnd_toEndOf="@id/log_in_image"

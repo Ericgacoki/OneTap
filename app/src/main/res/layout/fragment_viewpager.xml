@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".feature_onboarding.presentation.view_pager.ViewPagerFragment">
+    tools:context=".feature_onboarding.presentation.onboarding.ViewPagerFragment">
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/onBoardingViewpager"
@@ -22,7 +22,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias=".75"
+        app:layout_constraintVertical_bias=".85"
         app:tabBackground="@drawable/tab_selector"
         app:tabGravity="center"
         app:tabIndicatorHeight="0dp" />

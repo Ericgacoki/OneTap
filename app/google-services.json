@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "425539618017",
+    "project_id": "go-shopping-ericdev",
+    "storage_bucket": "go-shopping-ericdev.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:425539618017:android:e55fa16e020206c42663a0",
+        "android_client_info": {
+          "package_name": "com.ericdev.goshopping"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "425539618017-1ucrceehlq8hck6v1sjq8fcsc6hpqkpb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAV0gZXX9L8VxSNqxZ2WFKQTjH_vuCl-rk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "425539618017-1ucrceehlq8hck6v1sjq8fcsc6hpqkpb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

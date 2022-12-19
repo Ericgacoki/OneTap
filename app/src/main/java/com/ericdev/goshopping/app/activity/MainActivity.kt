@@ -1,4 +1,4 @@
-package com.ericdev.goshopping.app
+package com.ericdev.goshopping.app.activity
 
 import android.R
 import android.os.Bundle
@@ -19,6 +19,8 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
     }
+
+    // TODO("Check current user and onBoarding state then decide the next destination")
 
     private fun hideStatusBar() {
         window.decorView.systemUiVisibility =

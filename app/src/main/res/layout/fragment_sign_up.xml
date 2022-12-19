@@ -23,7 +23,7 @@
         android:layout_marginStart="32dp"
         android:text="SIGN UP"
         android:textColor="@color/white"
-        android:textSize="32dp"
+        android:textSize="32sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/sign_up_image"
         app:layout_constraintEnd_toEndOf="@id/sign_up_image"
@@ -57,8 +57,8 @@
                 android:layout_height="48dp"
                 android:background="@drawable/input_bg_shape"
                 android:hint="Email"
-                android:maxLength="32"
                 android:inputType="textEmailAddress"
+                android:maxLength="32"
                 android:maxLines="1"
                 android:paddingHorizontal="16dp" />
         </com.google.android.material.textfield.TextInputLayout>
