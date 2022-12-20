@@ -7,5 +7,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ViewPagerViewModel @Inject constructor(auth: FirebaseAuth) : ViewModel() {
+    // TODO: Use data store to store and check this value
     val finishedOnBoarding = false
 }

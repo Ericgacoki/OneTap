@@ -5,13 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.ericdev.goshopping.databinding.FragmentViewpagerBinding
 import com.ericdev.goshopping.feature_onboarding.presentation.adapter.ViewPagerAdapter
+import com.ericdev.goshopping.feature_onboarding.presentation.viewmodel.ViewPagerViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ViewPagerFragment : Fragment() {
+    val viewModel: ViewPagerViewModel by viewModels()
     lateinit var binding: FragmentViewpagerBinding
 
     override fun onCreateView(
@@ -22,7 +25,6 @@ class ViewPagerFragment : Fragment() {
 
         /*
         val currentUser = auth.currentUser
-        val viewModel: ViewPagerViewModel by viewModels()
         val finishedOnBoarding = viewModel.finishedOnBoarding
 
         if (currentUser != null && finishedOnBoarding) {
