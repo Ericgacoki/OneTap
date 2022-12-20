@@ -1,8 +1,6 @@
-package com.ericdev.goshopping.feature_sign_up.presentation
+package com.ericdev.goshopping.feature_sign_up.presentation.view
 
 import android.os.Bundle
-import android.text.TextUtils
-import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +12,11 @@ import androidx.navigation.fragment.findNavController
 import com.ericdev.goshopping.R
 import com.ericdev.goshopping.databinding.FragmentSignUpBinding
 import com.ericdev.goshopping.feature_sign_up.domain.model.SignUpState
-import com.ericdev.goshopping.feature_sign_up.util.Validity
+import com.ericdev.goshopping.feature_sign_up.presentation.viewmodel.SignUpViewModel
+import com.ericdev.goshopping.util.ValidityChecker.Companion.isValidEmail
+import com.ericdev.goshopping.util.ValidityChecker.Companion.isValidPassword
+import com.ericdev.goshopping.util.ValidityChecker.InValid
+import com.ericdev.goshopping.util.ValidityChecker.Valid
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -52,12 +54,11 @@ class SignUpFragment : Fragment() {
             val password = viewModel.inputPassword
             val confirmPassword = viewModel.inputConfirmPassword
 
-            if (isValidEmail(email) is Validity.Valid &&
-                isValidPassword(password) is Validity.Valid &&
-                isValidPassword(confirmPassword) is Validity.Valid &&
+            if (isValidEmail(email) is Valid &&
+                isValidPassword(password) is Valid &&
+                isValidPassword(confirmPassword) is Valid &&
                 password == confirmPassword
             ) {
-
                 viewModel.signUpUser()
                 viewModel.signUpState.observe(viewLifecycleOwner) {
                     when (it) {
@@ -73,45 +74,20 @@ class SignUpFragment : Fragment() {
                             Toast.makeText(requireActivity(), "Failed", Toast.LENGTH_SHORT).show()
                         }
                         else -> {
-
+                            // null
                         }
                     }
                 }
-
-            } else if (isValidEmail(email) is Validity.InValid) {
+            } else if (isValidEmail(email) is InValid) {
                 binding.etSignUpEmail.error = isValidEmail(email).message
-            } else if (isValidPassword(password) is Validity.InValid) {
+            } else if (isValidPassword(password) is InValid) {
                 binding.etSignUpPassword.error = isValidPassword(password).message
-            } else if (isValidPassword(confirmPassword) is Validity.InValid) {
+            } else if (isValidPassword(confirmPassword) is InValid) {
                 binding.etSignUpConfirmPassword.error = isValidPassword(confirmPassword).message
             } else {
                 binding.etSignUpConfirmPassword.error = "Passwords mismatch"
             }
         }
-
         return binding.root
-    }
-
-    private fun isValidEmail(email: String): Validity {
-        val valid = !TextUtils.isEmpty(email) && Patterns.EMAIL_ADDRESS.matcher(email).matches()
-        return if (valid) {
-            Validity.Valid
-        } else {
-            if (TextUtils.isEmpty(email))
-                Validity.InValid("Email is required")
-            else Validity.InValid("Invalid Email")
-        }
-    }
-
-    private fun isValidPassword(password: String): Validity {
-        if (password.length < 8) return Validity.InValid(reason = "Too short")
-        if (password.firstOrNull { it.isDigit() } == null) return Validity.InValid("Must have a digit")
-        if (password.filter { it.isLetter() }
-                .firstOrNull { it.isUpperCase() } == null) return Validity.InValid("Must include uppercase letter")
-        if (password.filter { it.isLetter() }
-                .firstOrNull { it.isLowerCase() } == null) return Validity.InValid("Must include lowercase letter")
-        if (password.firstOrNull { !it.isLetterOrDigit() } == null) return Validity.InValid("Must include special character")
-
-        return Validity.Valid
     }
 }
