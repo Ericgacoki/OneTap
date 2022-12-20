@@ -21,7 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
-        android:text="LOG IN"
+        android:text="@string/log_in_caps"
         android:textColor="@color/white"
         android:textSize="32sp"
         android:textStyle="bold"
@@ -47,27 +47,27 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:passwordToggleEnabled="false"
             app:hintEnabled="true"
+            app:passwordToggleEnabled="false"
             app:passwordToggleTint="@color/color_primary">
 
-        <EditText
-            android:id="@+id/et_log_in_email"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:background="@drawable/input_bg_shape"
-            android:hint="Email"
-            android:inputType="textEmailAddress"
-            android:maxLines="1"
-            android:paddingHorizontal="16dp" />
+            <EditText
+                android:id="@+id/et_log_in_email"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/input_bg_shape"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress"
+                android:maxLines="1"
+                android:paddingHorizontal="16dp" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            app:passwordToggleEnabled="true"
             app:hintEnabled="true"
+            app:passwordToggleEnabled="true"
             app:passwordToggleTint="@color/color_primary">
 
             <EditText
@@ -75,7 +75,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:background="@drawable/input_bg_shape"
-                android:hint="Password"
+                android:hint="@string/password"
                 android:inputType="textPassword"
                 android:maxLength="16"
                 android:maxLines="1"
@@ -90,7 +90,7 @@
             android:layout_marginTop="48dp"
             android:background="@drawable/button_bg"
             android:elevation="0dp"
-            android:text="PROCEED"
+            android:text="@string/proceed"
             android:textColor="@color/white"
             android:textStyle="bold" />
 
@@ -104,7 +104,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Don't have an account?" />
+                android:text="@string/don_t_have_an_account" />
 
             <TextView
                 android:id="@+id/tv_sign_up"
