@@ -31,25 +31,31 @@ class SignUpFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentSignUpBinding.inflate(layoutInflater)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         binding.tvLogIn.setOnClickListener {
             val action = R.id.action_signUpFragment_to_logInFragment
             findNavController().navigate(action)
         }
 
         binding.etSignUpEmail.addTextChangedListener {
-            val newText = binding.etSignUpEmail.text.toString()
+            val newText = binding.etSignUpEmail.text.toString().trim()
             viewModel.inputEmail = newText
         }
         binding.etSignUpPassword.addTextChangedListener {
-            val newText = binding.etSignUpPassword.text.toString()
+            val newText = binding.etSignUpPassword.text.toString().trim()
             viewModel.inputPassword = newText
         }
         binding.etSignUpConfirmPassword.addTextChangedListener {
-            val newText = binding.etSignUpConfirmPassword.text.toString()
+            val newText = binding.etSignUpConfirmPassword.text.toString().trim()
             viewModel.inputConfirmPassword = newText
         }
 
-        binding.btnProceedSignUp.setOnClickListener {
+        binding.btnProceedSignUp.setOnClickListener { button ->
             val email = viewModel.inputEmail
             val password = viewModel.inputPassword
             val confirmPassword = viewModel.inputConfirmPassword
@@ -63,18 +69,23 @@ class SignUpFragment : Fragment() {
                 viewModel.signUpState.observe(viewLifecycleOwner) {
                     when (it) {
                         SignUpState.LOADING -> {
+                            button.isEnabled = false
                             Toast.makeText(requireActivity(), "Loading...", Toast.LENGTH_SHORT)
                                 .show()
                         }
                         SignUpState.SUCCESSFUL -> {
                             Toast.makeText(requireActivity(), "Success!", Toast.LENGTH_SHORT).show()
+                            viewModel.signUpState.removeObservers(viewLifecycleOwner)
                             findNavController().navigate(R.id.action_signUpFragment_to_homeFragment)
                         }
                         SignUpState.FAILED -> {
+                            button.isEnabled = true
                             Toast.makeText(requireActivity(), "Failed", Toast.LENGTH_SHORT).show()
+                            viewModel.signUpState.removeObservers(viewLifecycleOwner)
                         }
                         else -> {
-                            // null
+                            button.isEnabled = true
+                            viewModel.signUpState.removeObservers(viewLifecycleOwner)
                         }
                     }
                 }
@@ -88,6 +99,5 @@ class SignUpFragment : Fragment() {
                 binding.etSignUpConfirmPassword.error = "Passwords mismatch"
             }
         }
-        return binding.root
     }
 }

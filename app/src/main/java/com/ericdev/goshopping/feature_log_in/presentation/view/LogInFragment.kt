@@ -17,6 +17,7 @@ import com.ericdev.goshopping.util.ValidityChecker.Companion.isValidEmail
 import com.ericdev.goshopping.util.ValidityChecker.InValid
 import com.ericdev.goshopping.util.ValidityChecker.Valid
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class LogInFragment : Fragment() {
@@ -28,7 +29,15 @@ class LogInFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        Timber.e("LOGIN: ON_CREATE_VIEW")
         binding = FragmentLogInBinding.inflate(layoutInflater)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        Timber.e("LOGIN: ON_VIEW_CREATED")
 
         binding.tvSignUp.setOnClickListener {
             val action = R.id.action_logInFragment_to_signUpFragment
@@ -36,16 +45,16 @@ class LogInFragment : Fragment() {
         }
 
         binding.etLogInEmail.addTextChangedListener {
-            val newText = binding.etLogInEmail.text.toString()
+            val newText = binding.etLogInEmail.text.toString().trim()
             viewModel.inputEmail = newText
         }
 
         binding.etLogInPassword.addTextChangedListener {
-            val newText = binding.etLogInPassword.text.toString()
+            val newText = binding.etLogInPassword.text.toString().trim()
             viewModel.inputPassword = newText
         }
 
-        binding.btnProceedLogIn.setOnClickListener {
+        binding.btnProceedLogIn.setOnClickListener { button ->
             val email = viewModel.inputEmail
             val password = viewModel.inputPassword
 
@@ -54,20 +63,24 @@ class LogInFragment : Fragment() {
                 viewModel.logInState.observe(viewLifecycleOwner) { state ->
                     when (state) {
                         LogInState.LOADING -> {
-                            // TODO: Disable button when loading
+                            button.isEnabled = false
                             Toast.makeText(requireActivity(), "Loading...", Toast.LENGTH_SHORT)
                                 .show()
                         }
                         LogInState.SUCCESSFUL -> {
                             Toast.makeText(requireActivity(), "Success!", Toast.LENGTH_SHORT).show()
+                            viewModel.logInState.removeObservers(viewLifecycleOwner)
                             findNavController().navigate(R.id.action_logInFragment_to_homeFragment)
                         }
                         LogInState.FAILED -> {
+                            button.isEnabled = true
                             Toast.makeText(requireActivity(), "Failed!", Toast.LENGTH_SHORT)
                                 .show()
+                            viewModel.logInState.removeObservers(viewLifecycleOwner)
                         }
                         else -> {
-
+                            button.isEnabled = true
+                            viewModel.logInState.removeObservers(viewLifecycleOwner)
                         }
                     }
                 }
@@ -77,7 +90,5 @@ class LogInFragment : Fragment() {
                 binding.etLogInPassword.error = "password is required"
             }
         }
-
-        return binding.root
     }
 }
