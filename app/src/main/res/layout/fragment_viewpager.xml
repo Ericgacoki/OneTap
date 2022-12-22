@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".feature_onboarding.presentation.onboarding.ViewPagerFragment">
+    tools:context=".feature_onboarding.presentation.view.ViewPagerFragment">
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/onBoardingViewpager"
