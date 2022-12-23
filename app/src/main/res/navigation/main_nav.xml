@@ -17,8 +17,8 @@
             app:popUpTo="@id/viewPagerFragment"
             app:popUpToInclusive="true" />
         <action
-            android:id="@+id/action_viewPagerFragment_to_homeFragment"
-            app:destination="@id/homeFragment"
+            android:id="@+id/action_viewPagerFragment_to_productsFragment"
+            app:destination="@id/productsFragment"
             app:launchSingleTop="true"
             app:popUpTo="@id/viewPagerFragment"
             app:popUpToInclusive="true" />
@@ -42,8 +42,8 @@
             app:popUpTo="@id/signUpFragment"
             app:popUpToInclusive="true" />
         <action
-            android:id="@+id/action_signUpFragment_to_homeFragment"
-            app:destination="@id/homeFragment"
+            android:id="@+id/action_signUpFragment_to_productsFragment"
+            app:destination="@id/productsFragment"
             app:launchSingleTop="true"
             app:popUpTo="@id/signUpFragment"
             app:popUpToInclusive="true" />
@@ -61,18 +61,18 @@
             app:popUpTo="@id/logInFragment"
             app:popUpToInclusive="true" />
         <action
-            android:id="@+id/action_logInFragment_to_homeFragment"
-            app:destination="@id/homeFragment"
+            android:id="@+id/action_logInFragment_to_productsFragment"
+            app:destination="@id/productsFragment"
             app:launchSingleTop="true"
             app:popUpTo="@id/logInFragment"
             app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
-        android:id="@+id/homeFragment"
-        tools:layout="@layout/fragment_home"
-        android:name="com.ericdev.goshopping.feature_home.presentation.HomeFragment"
-        android:label="Home" />
+        android:id="@+id/productsFragment"
+        tools:layout="@layout/fragment_products"
+        android:name="com.ericdev.goshopping.feature_products.presentation.view.ProductsFragment"
+        android:label="Products" />
 
     <fragment
         android:id="@+id/splashFragment"
@@ -103,8 +103,8 @@
             app:popUpToInclusive="true" />
         <action
 
-            android:id="@+id/action_splashFragment_to_homeFragment"
-            app:destination="@id/homeFragment"
+            android:id="@+id/action_splashFragment_to_productsFragment"
+            app:destination="@id/productsFragment"
             app:launchSingleTop="true"
             app:popUpTo="@id/splashFragment"
             app:popUpToInclusive="true" />

@@ -3,7 +3,7 @@ package com.ericdev.goshopping.feature_log_in.presentation.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.ericdev.goshopping.feature_log_in.domain.model.LogInState
+import com.ericdev.goshopping.feature_log_in.presentation.state.LogInState
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

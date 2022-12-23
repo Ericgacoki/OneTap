@@ -11,7 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.ericdev.goshopping.R
 import com.ericdev.goshopping.databinding.FragmentSignUpBinding
-import com.ericdev.goshopping.feature_sign_up.domain.model.SignUpState
+import com.ericdev.goshopping.feature_sign_up.presentation.state.SignUpState
 import com.ericdev.goshopping.feature_sign_up.presentation.viewmodel.SignUpViewModel
 import com.ericdev.goshopping.util.ValidityChecker.Companion.isValidEmail
 import com.ericdev.goshopping.util.ValidityChecker.Companion.isValidPassword
@@ -76,7 +76,7 @@ class SignUpFragment : Fragment() {
                         SignUpState.SUCCESSFUL -> {
                             Toast.makeText(requireActivity(), "Success!", Toast.LENGTH_SHORT).show()
                             viewModel.signUpState.removeObservers(viewLifecycleOwner)
-                            findNavController().navigate(R.id.action_signUpFragment_to_homeFragment)
+                            findNavController().navigate(R.id.action_signUpFragment_to_productsFragment)
                         }
                         SignUpState.FAILED -> {
                             button.isEnabled = true

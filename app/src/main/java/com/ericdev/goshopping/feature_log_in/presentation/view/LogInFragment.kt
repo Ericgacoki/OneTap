@@ -11,7 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.ericdev.goshopping.R
 import com.ericdev.goshopping.databinding.FragmentLogInBinding
-import com.ericdev.goshopping.feature_log_in.domain.model.LogInState
+import com.ericdev.goshopping.feature_log_in.presentation.state.LogInState
 import com.ericdev.goshopping.feature_log_in.presentation.viewmodel.LogInViewModel
 import com.ericdev.goshopping.util.ValidityChecker.Companion.isValidEmail
 import com.ericdev.goshopping.util.ValidityChecker.InValid
@@ -70,7 +70,7 @@ class LogInFragment : Fragment() {
                         LogInState.SUCCESSFUL -> {
                             Toast.makeText(requireActivity(), "Success!", Toast.LENGTH_SHORT).show()
                             viewModel.logInState.removeObservers(viewLifecycleOwner)
-                            findNavController().navigate(R.id.action_logInFragment_to_homeFragment)
+                            findNavController().navigate(R.id.action_logInFragment_to_productsFragment)
                         }
                         LogInState.FAILED -> {
                             button.isEnabled = true
