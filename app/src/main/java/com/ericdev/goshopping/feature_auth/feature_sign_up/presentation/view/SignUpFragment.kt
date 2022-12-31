@@ -1,4 +1,4 @@
-package com.ericdev.goshopping.feature_sign_up.presentation.view
+package com.ericdev.goshopping.feature_auth.feature_sign_up.presentation.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,12 +11,13 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.ericdev.goshopping.R
 import com.ericdev.goshopping.databinding.FragmentSignUpBinding
-import com.ericdev.goshopping.feature_sign_up.presentation.state.SignUpState
-import com.ericdev.goshopping.feature_sign_up.presentation.viewmodel.SignUpViewModel
-import com.ericdev.goshopping.util.ValidityChecker.Companion.isValidEmail
-import com.ericdev.goshopping.util.ValidityChecker.Companion.isValidPassword
-import com.ericdev.goshopping.util.ValidityChecker.InValid
-import com.ericdev.goshopping.util.ValidityChecker.Valid
+import com.ericdev.goshopping.feature_auth.feature_sign_up.presentation.state.SignUpState
+import com.ericdev.goshopping.feature_auth.feature_sign_up.presentation.viewmodel.SignUpViewModel
+import com.ericdev.validitychecker.ValidityChecker
+import com.ericdev.validitychecker.ValidityChecker.Valid
+import com.ericdev.validitychecker.ValidityChecker.InValid
+import com.ericdev.validitychecker.ValidityChecker.Companion.isValidEmail
+import com.ericdev.validitychecker.ValidityChecker.Companion.isValidPassword
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
