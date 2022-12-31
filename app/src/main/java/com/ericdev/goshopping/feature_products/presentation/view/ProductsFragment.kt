@@ -147,6 +147,105 @@ class ProductsFragment : Fragment() {
               }
           }
       }*/
+ /*  private fun showErrorDialog(msg: String) {
+          val dialogBinding = ErrorDialogBinding.inflate(LayoutInflater.from(context))
+          val builder = AlertDialog.Builder(context)
+          builder.setView(binding.root)
+
+          val customDialog = AlertDialog.Builder(requireActivity(), 0).create()
+
+          customDialog.apply {
+              window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+              setView(dialogBinding.root)
+              setCancelable(false)
+          }.show()
+
+          customDialog.apply {
+              setView(dialogBinding.root)
+              setCancelable(false)
+          }.show()
+
+          dialogBinding.apply {
+              val firstChar = msg[0].uppercaseChar().toString()
+              tvErrorMessage.text = msg.replaceFirst(firstChar, firstChar, true)
+
+              btnErrorCancel.setOnClickListener {
+                  customDialog.dismiss()
+                  // TODO: Show a "no data" image on the screen when the dialog exits on an Error state.
+                  //  Hide this image during Loading and Success states.
+              }
+              btnCancelRetry.setOnClickListener {
+                  viewModel.getTempProducts()
+                  customDialog.dismiss()
+              }
+          }
+      }*/
+ /*  private fun showErrorDialog(msg: String) {
+          val dialogBinding = ErrorDialogBinding.inflate(LayoutInflater.from(context))
+          val builder = AlertDialog.Builder(context)
+          builder.setView(binding.root)
+
+          val customDialog = AlertDialog.Builder(requireActivity(), 0).create()
+
+          customDialog.apply {
+              window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+              setView(dialogBinding.root)
+              setCancelable(false)
+          }.show()
+
+          customDialog.apply {
+              setView(dialogBinding.root)
+              setCancelable(false)
+          }.show()
+
+          dialogBinding.apply {
+              val firstChar = msg[0].uppercaseChar().toString()
+              tvErrorMessage.text = msg.replaceFirst(firstChar, firstChar, true)
+
+              btnErrorCancel.setOnClickListener {
+                  customDialog.dismiss()
+                  // TODO: Show a "no data" image on the screen when the dialog exits on an Error state.
+                  //  Hide this image during Loading and Success states.
+              }
+              btnCancelRetry.setOnClickListener {
+                  viewModel.getTempProducts()
+                  customDialog.dismiss()
+              }
+          }
+      }*/
+ /*  private fun showErrorDialog(msg: String) {
+          val dialogBinding = ErrorDialogBinding.inflate(LayoutInflater.from(context))
+          val builder = AlertDialog.Builder(context)
+          builder.setView(binding.root)
+
+          val customDialog = AlertDialog.Builder(requireActivity(), 0).create()
+
+          customDialog.apply {
+              window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+              setView(dialogBinding.root)
+              setCancelable(false)
+          }.show()
+
+          customDialog.apply {
+              setView(dialogBinding.root)
+              setCancelable(false)
+          }.show()
+
+          dialogBinding.apply {
+              val firstChar = msg[0].uppercaseChar().toString()
+              tvErrorMessage.text = msg.replaceFirst(firstChar, firstChar, true)
+
+              btnErrorCancel.setOnClickListener {
+                  customDialog.dismiss()
+                  // TODO: Show a "no data" image on the screen when the dialog exits on an Error state.
+                  //  Hide this image during Loading and Success states.
+              }
+              btnCancelRetry.setOnClickListener {
+                  viewModel.getTempProducts()
+                  customDialog.dismiss()
+              }
+          }
+      }*/
 }
 
 @Preview
