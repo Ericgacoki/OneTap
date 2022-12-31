@@ -32,7 +32,7 @@
 
     <fragment
         android:id="@+id/signUpFragment"
-        android:name="com.ericdev.goshopping.feature_sign_up.presentation.view.SignUpFragment"
+        android:name="com.ericdev.goshopping.feature_auth.feature_sign_up.presentation.view.SignUpFragment"
         android:label="SignUp"
         tools:layout="@layout/fragment_sign_up">
         <action
@@ -51,7 +51,7 @@
 
     <fragment
         android:id="@+id/logInFragment"
-        android:name="com.ericdev.goshopping.feature_log_in.presentation.view.LogInFragment"
+        android:name="com.ericdev.goshopping.feature_auth.feature_log_in.presentation.view.LogInFragment"
         android:label="LogIn"
         tools:layout="@layout/fragment_log_in">
         <action
