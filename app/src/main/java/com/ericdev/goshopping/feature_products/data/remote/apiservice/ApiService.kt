@@ -15,13 +15,11 @@ interface ApiService {
 
     @GET("products/")
     suspend fun getProductsByCategory(
-        @Query("category_id")
-        categoryId: String
+        @Query("category_id") categoryId: String
     ): ProductDtoResult
 
     @GET("products/search/")
     suspend fun searchProduct(
-        @Query("params")
-        params: String
+        @Query("params") params: String
     ): ProductDtoResult
 }
