@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/lay_swipe_to_refresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F6F6F6"
-    android:padding="14dp">
+    android:background="#F7F7F7">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="14dp">
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -26,6 +28,8 @@
                 android:layout_weight="1.9"
                 android:background="@drawable/btn_cancel_shape"
                 android:backgroundTint="@color/white"
+                android:clickable="true"
+                android:focusable="true"
                 android:foregroundTint="@color/color_primary"
                 app:queryBackground="@android:color/transparent"
                 app:queryHint="Search" />
@@ -48,8 +52,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="HOME"
-            android:textAlignment="center"
-            android:textSize="40sp" />
+            android:textAlignment="center" />
 
         <ImageView
             android:id="@+id/iv_image"
@@ -58,5 +61,10 @@
             android:layout_marginTop="24dp"
             android:gravity="center_vertical"
             android:scaleType="centerInside" />
+
+        <ProgressBar
+            android:id="@+id/load_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
