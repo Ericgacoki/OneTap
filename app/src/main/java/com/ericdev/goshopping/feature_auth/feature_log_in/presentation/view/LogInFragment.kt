@@ -1,4 +1,4 @@
-package com.ericdev.goshopping.feature_log_in.presentation.view
+package com.ericdev.goshopping.feature_auth.feature_log_in.presentation.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,11 +11,11 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.ericdev.goshopping.R
 import com.ericdev.goshopping.databinding.FragmentLogInBinding
-import com.ericdev.goshopping.feature_log_in.presentation.state.LogInState
-import com.ericdev.goshopping.feature_log_in.presentation.viewmodel.LogInViewModel
-import com.ericdev.goshopping.util.ValidityChecker.Companion.isValidEmail
-import com.ericdev.goshopping.util.ValidityChecker.InValid
-import com.ericdev.goshopping.util.ValidityChecker.Valid
+import com.ericdev.goshopping.feature_auth.feature_log_in.presentation.state.LogInState
+import com.ericdev.goshopping.feature_auth.feature_log_in.presentation.viewmodel.LogInViewModel
+import com.ericdev.validitychecker.ValidityChecker.InValid
+import com.ericdev.validitychecker.ValidityChecker.Valid
+import com.ericdev.validitychecker.ValidityChecker.Companion.isValidEmail
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
