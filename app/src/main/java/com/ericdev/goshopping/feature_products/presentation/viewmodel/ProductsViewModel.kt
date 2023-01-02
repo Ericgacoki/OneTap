@@ -1,7 +1,5 @@
 package com.ericdev.goshopping.feature_products.presentation.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ericdev.goshopping.feature_products.data.mapper.DataMappers.toProduct
@@ -10,6 +8,8 @@ import com.ericdev.goshopping.feature_products.domain.model.Product
 import com.ericdev.goshopping.feature_products.domain.repository.RemoteProductsRepository
 import com.ericdev.goshopping.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -17,9 +17,10 @@ import javax.inject.Inject
 class ProductsViewModel @Inject constructor(val repository: RemoteProductsRepository) :
     ViewModel() {
 
-    private var _tempProductsState: MutableLiveData<Resource<List<TempProductDtoResultItem>?>> =
-        MutableLiveData(Resource.Loading())
-    val tempProductsState: LiveData<Resource<List<TempProductDtoResultItem>?>> = _tempProductsState
+    private var _tempProductsState: MutableStateFlow<Resource<List<TempProductDtoResultItem>?>> =
+        MutableStateFlow(Resource.Loading())
+    val tempProductsStateFlow: StateFlow<Resource<List<TempProductDtoResultItem>?>> =
+        _tempProductsState
 
     init {
         // getAllProducts()
@@ -46,9 +47,9 @@ class ProductsViewModel @Inject constructor(val repository: RemoteProductsReposi
     }
 
 
-    private var _allProductsState: MutableLiveData<Resource<List<Product>?>> =
-        MutableLiveData(Resource.Loading())
-    val allProductsState: LiveData<Resource<List<Product>?>> = _allProductsState
+    private var _allProductsState: MutableStateFlow<Resource<List<Product>?>> =
+        MutableStateFlow(Resource.Loading())
+    private val allProductsStateFlow: StateFlow<Resource<List<Product>?>> = _allProductsState
 
 
     // TODO("make this public after implementing the new end point")
