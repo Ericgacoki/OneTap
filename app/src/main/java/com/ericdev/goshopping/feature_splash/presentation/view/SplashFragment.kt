@@ -50,7 +50,7 @@ class SplashFragment : Fragment() {
                 Handler(Looper.getMainLooper()).postDelayed(
                     {
                         if (currentUser != null && onBoardingFinished) {
-                            findNavController().navigate(R.id.action_splashFragment_to_homeFragment)
+                            findNavController().navigate(R.id.action_splashFragment_to_productsFragment)
                         } else if (currentUser == null && onBoardingFinished) {
                             findNavController().navigate(R.id.action_splashFragment_to_signUpFragment)
                         } else {

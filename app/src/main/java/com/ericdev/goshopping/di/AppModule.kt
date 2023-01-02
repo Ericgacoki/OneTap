@@ -3,11 +3,21 @@ package com.ericdev.goshopping.di
 import android.app.Application
 import com.ericdev.goshopping.feature_onboarding.data.prefs.OnBoardingDataRepository
 import com.ericdev.goshopping.feature_onboarding.domain.repository.OnBoardingRepository
+import com.ericdev.goshopping.feature_products.data.remote.apiservice.ApiService
+import com.ericdev.goshopping.feature_products.data.remote.repository.DataRemoteProductsRepository
+import com.ericdev.goshopping.util.Constants.BASE_URL
 import com.google.firebase.auth.FirebaseAuth
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
+import java.util.concurrent.TimeUnit
+import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
@@ -21,4 +31,33 @@ object AppModule {
     fun providesOnBoardingDataRepository(context: Application): OnBoardingRepository {
         return OnBoardingDataRepository(context)
     }
+
+    @Provides
+    fun providesOkHttpClient(): OkHttpClient {
+        val interceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+        return OkHttpClient.Builder()
+            .addInterceptor(interceptor)
+            .callTimeout(15, TimeUnit.SECONDS)
+            .connectTimeout(15, TimeUnit.SECONDS)
+            .writeTimeout(15, TimeUnit.SECONDS)
+            .readTimeout(15, TimeUnit.SECONDS)
+            .build()
+    }
+
+    @Provides
+    fun providesApiService(httpClient: OkHttpClient): ApiService {
+        return Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(httpClient)
+            .build()
+            .create()
+    }
+
+    @Provides
+    @Singleton
+    fun providesDataRemoteProductsRepository(apiService: ApiService): DataRemoteProductsRepository {
+        return DataRemoteProductsRepository(apiService)
+    }
+
 }
