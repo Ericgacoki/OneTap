@@ -5,31 +5,68 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement.Absolute.SpaceBetween
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.*
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.Center
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.TileMode
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.ericdev.goshopping.databinding.FragmentProductsBinding
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
+import com.ericdev.goshopping.R
+import com.ericdev.goshopping.compose.ui.theme.GoShoppingTheme
+import com.ericdev.goshopping.compose.ui.theme.colorInactive
+import com.ericdev.goshopping.compose.ui.theme.colorPrimary
+import com.ericdev.goshopping.compose.ui.theme.nunitoFontFamily
+import com.ericdev.goshopping.feature_products.data.remote.dto.temp.Rating
+import com.ericdev.goshopping.feature_products.data.remote.dto.temp.TempProductDtoResultItem
 import com.ericdev.goshopping.feature_products.presentation.viewmodel.ProductsViewModel
+import com.ericdev.goshopping.util.Resource
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.HorizontalPagerIndicator
+import com.google.accompanist.pager.rememberPagerState
+import androidx.compose.ui.graphics.Color as ComposeColor
 
 class ProductsFragment : Fragment() {
     private val viewModel: ProductsViewModel by activityViewModels()
-
-    lateinit var binding: FragmentProductsBinding
 
     @Suppress("DEPRECATION")
     override fun onCreateView(
@@ -37,219 +74,524 @@ class ProductsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentProductsBinding.inflate(layoutInflater)
-
         requireActivity().window.statusBarColor = Color.parseColor("#E2615B")
         requireActivity().window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE
 
-        // return binding.root
-
         return ComposeView(requireContext()).apply {
-            // Dispose of the Composition when the view's LifecycleOwner
-            // is destroyed
+
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                /*MaterialTheme {
-                    // In Compose world
-                    Text("Hello Compose!")
-                }*/
-                val list = remember {
-                    mutableStateOf((1..200).toList())
-                }
-                LazyColumn(
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .fillMaxSize()
-                ) {
-                    items(list.value) { count ->
-                        Text(text = "$count", fontSize = 24.sp)
-                        Spacer(modifier = Modifier.height(4.dp))
-                    }
+                GoShoppingTheme {
+                    Scaffold(
+                        modifier = Modifier.fillMaxSize(),
+                        backgroundColor = ComposeColor(0xFFF7F7F7),
+                        topBar = {
+                            Row(
+                                modifier = Modifier
+                                    .padding(8.dp)
+                                    .fillMaxWidth(),
+                                verticalAlignment = CenterVertically,
+                                horizontalArrangement = SpaceBetween
+                            ) {
+                                SearchBarCompose(
+                                    modifier = Modifier
+                                        .clip(RoundedCornerShape(100))
+                                        .fillMaxWidth(.80F)
+                                        .background(ComposeColor.White),
+                                    onSearchParamChange = {
+                                        // TODO("Update value in viewModel")
+                                    },
+                                    onSearchClick = {
+                                        // TODO("Perform search event")
+                                    })
+
+                                val link1 =
+                                    "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/XXXTENTACION_mugshot_12_28_2016.jpg/800px-XXXTENTACION_mugshot_12_28_2016.jpg"
+                                val link2 =
+                                    "https://www.vibe.com/wp-content/uploads/2017/09/XXXTentacion-mugshot-orange-county-jail-1504911983-640x5601-1505432825.jpg?w=640&h=511&crop=1"
+                                ProfileImage(link2) {
+                                    // TODO: Navigate to User profile
+                                }
+                            }
+                        },
+                        content = {
+                            val productsState = viewModel.tempProductsStateFlow.collectAsState()
+
+                            when (productsState.value) {
+                                is Resource.Loading -> {
+                                    Box(
+                                        modifier = Modifier.fillMaxSize(),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        CircularProgressIndicator()
+                                    }
+                                }
+                                is Resource.Success -> {
+                                    val featuredProducts: ArrayList<TempProductDtoResultItem> =
+                                        arrayListOf()
+                                    for (i in 1..3) {
+                                        featuredProducts.add(productsState.value.data!!.random())
+                                    }
+                                    // TODO: Remove this demo after implementing the NEW API
+                                    data class DemoCategory(val id: Int, val title: String)
+
+                                    val demoCategories = listOf(
+                                        DemoCategory(0, "All"),
+                                        DemoCategory(12, "Men"),
+                                        DemoCategory(1, "Women"),
+                                        DemoCategory(2, "Kids"),
+                                        DemoCategory(3, "Jewelery"),
+                                        DemoCategory(4, "Electronics"),
+                                        DemoCategory(5, "Household"),
+                                        DemoCategory(6, "Jewelery 2"),
+                                        DemoCategory(7, "Electronics 2"),
+                                        DemoCategory(8, "Household 2"),
+                                        DemoCategory(9, "Jewelery 2"),
+                                        DemoCategory(10, "Electronics 2"),
+                                        DemoCategory(11, "Household 2"),
+                                    )
+                                    var demoSelectedCategoryId by remember {
+                                        mutableStateOf(0)
+                                    }
+
+                                    Column(
+                                        modifier = Modifier
+                                            .padding(it)
+                                            .fillMaxSize()
+                                    ) {
+                                        LazyVerticalGrid(
+                                            modifier = Modifier.fillMaxSize(),
+                                            columns = GridCells.Fixed(2),
+                                            state = rememberLazyGridState()
+                                        ) {
+                                            item(span = { GridItemSpan(2) }) {
+                                                FeaturedProductsViewPager(featuredProducts)
+                                            }
+
+                                            item(span = { GridItemSpan(2) }) {
+                                                LazyRow(
+                                                    modifier = Modifier
+                                                        .padding(8.dp)
+                                                        .fillMaxWidth()
+                                                ) {
+                                                    items(demoCategories) { category ->
+                                                        ProductCategory(
+                                                            selected = demoSelectedCategoryId == category.id,
+                                                            icon = R.drawable.ic_demo_category,
+                                                            title = category.title
+                                                        ) {
+                                                            if (demoSelectedCategoryId != category.id) {
+                                                                demoSelectedCategoryId = category.id
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                            items(
+                                                productsState.value.data ?: emptyList()
+                                            ) { product ->
+                                                ProductItem(product = product) {
+                                                    // TODO: Navigate to product description
+                                                }
+
+                                            }
+                                            item(span = { GridItemSpan(2) }) {
+                                                Spacer(modifier = Modifier.height(50.dp))
+                                            }
+                                        }
+                                    }
+                                }
+                                is Resource.Error -> {
+                                    Box(
+                                        modifier = Modifier
+                                            .padding(2.dp)
+                                            .fillMaxSize(),
+                                        contentAlignment = Alignment.Center,
+                                    ) {
+                                        Column(
+                                            horizontalAlignment = CenterHorizontally
+                                        ) {
+                                            val firstChar =
+                                                productsState.value.message!![0].uppercaseChar()
+                                                    .toString()
+
+                                            Text(
+                                                text = productsState.value.message!!.replaceFirst(
+                                                    firstChar, firstChar, true
+                                                ),
+                                                color = ComposeColor.Gray,
+                                                textAlign = TextAlign.Center,
+                                                style = MaterialTheme.typography.h6
+                                            )
+
+                                            Spacer(modifier = Modifier.height(12.dp))
+
+                                            Button(onClick = {
+                                                viewModel.getTempProducts()
+                                            }) {
+                                                Text(
+                                                    text = "RETRY",
+                                                    style = MaterialTheme.typography.button
+                                                )
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    )
                 }
             }
         }
     }
+}
 
-    /*override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+@OptIn(ExperimentalPagerApi::class)
+@Composable
+fun FeaturedProductsViewPager(
+    featuredProducts: ArrayList<TempProductDtoResultItem>
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp)
+    ) {
+        val pagerState = rememberPagerState()
 
-        binding.ivImage.apply {
-            clipToOutline = true
+        HorizontalPager(
+            modifier = Modifier.fillMaxWidth(),
+            count = featuredProducts.size,
+            state = pagerState
+        ) { currentPage ->
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(featuredProducts[currentPage].image)
+                    .crossfade(true)
+                    .build(),
+                placeholder = painterResource(R.drawable.ic_placeholder),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .clip(RoundedCornerShape(12))
+                    .fillMaxWidth()
+                    .height(180.dp)
+                    .aspectRatio(1F)
+                    .clickable {
+                        // TODO: Navigate to product details
+                    }
+            )
         }
 
-        binding.laySwipeToRefresh.setOnRefreshListener {
-            viewModel.getTempProducts()
-        }
+        HorizontalPagerIndicator(
+            pagerState = pagerState,
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .padding(top = 16.dp),
+            activeColor = colorPrimary,
+            inactiveColor = colorInactive
+        )
+    }
+}
 
-        viewModel.tempProductsState.observe(viewLifecycleOwner) { resource ->
-            when (resource) {
-                is Resource.Loading -> {
-                    binding.tvHome.text = "Loading..."
+@Composable
+fun SearchBarCompose(
+    modifier: Modifier = Modifier
+        .clip(RoundedCornerShape(100))
+        // .fillMaxWidth()
+        .background(
+            if (isSystemInDarkTheme())
+                ComposeColor.White.copy(alpha = .24F) else
+                ComposeColor.Black.copy(alpha = .24F)
+        ),
+    hint: String = "Search",
+    onSearchParamChange: (String) -> Unit,
+    onSearchClick: (String) -> Unit
+) {
+    Box(modifier = modifier.height(54.dp)) {
+        var searchParam: String by remember { mutableStateOf("") }
 
-                    if (!binding.laySwipeToRefresh.isRefreshing) {
-                        //  TODO("Show loading gif")
-                        binding.loadView.visibility = VISIBLE
-                    }
+        val focusRequester = remember { FocusRequester() }
+        val focusManager = LocalFocusManager.current
+
+        TextField(
+            value = searchParam,
+            onValueChange = { newValue ->
+                searchParam = if (newValue.trim().isNotEmpty()) newValue else ""
+                onSearchParamChange(newValue)
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .focusRequester(focusRequester = focusRequester),
+            singleLine = true,
+            placeholder = {
+                Text(text = hint)
+            },
+            colors = TextFieldDefaults.textFieldColors(
+                backgroundColor = androidx.compose.ui.graphics.Color.Transparent,
+                focusedIndicatorColor = androidx.compose.ui.graphics.Color.Transparent,
+                unfocusedIndicatorColor = androidx.compose.ui.graphics.Color.Transparent
+            ), keyboardOptions = KeyboardOptions(
+                autoCorrect = true,
+                keyboardType = KeyboardType.Text,
+                imeAction = ImeAction.Search
+            ),
+            keyboardActions = KeyboardActions(
+                onSearch = {
+                    onSearchClick(searchParam)
+                    focusManager.clearFocus()
                 }
-                is Resource.Success -> {
-                    binding.laySwipeToRefresh.isRefreshing = false
-                    binding.loadView.visibility = INVISIBLE
-
-                    binding.tvHome.text = "Found ${resource.data?.size ?: 0} products"
-                    binding.ivImage.let {
-                        Glide.with(requireActivity())
-                            .load(resource.data?.get(12)?.image)
-                            .placeholder(R.drawable.ic_launcher_foreground)
-                            .into(it)
+            ),
+            trailingIcon = {
+                Row {
+                    AnimatedVisibility(visible = searchParam.trim().isNotEmpty()) {
+                        IconButton(onClick = {
+                            focusManager.clearFocus()
+                            searchParam = ""
+                            onSearchParamChange(searchParam)
+                        }) {
+                            Icon(
+                                imageVector = Icons.Default.Clear,
+                                contentDescription = null
+                            )
+                        }
                     }
-                }
-                is Resource.Error -> {
-                    binding.laySwipeToRefresh.isRefreshing = false
-                    binding.loadView.visibility = INVISIBLE
 
-                    binding.tvHome.text = "Error!"
-                    showErrorDialog(resource.message!!)
+                    IconButton(onClick = {
+                        onSearchClick(searchParam)
+                        focusManager.clearFocus()
+                    }) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_search),
+                            contentDescription = null
+                        )
+                    }
                 }
             }
+        )
+    }
+}
+
+@Composable
+fun ProfileImage(link: String?, onClick: () -> Unit) {
+    val borderColors = listOf(ComposeColor.Red, ComposeColor.Black, ComposeColor.Cyan)
+
+    AsyncImage(
+        model = ImageRequest.Builder(LocalContext.current)
+            .data(link)
+            .crossfade(durationMillis = 250)
+            .build(),
+        placeholder = painterResource(R.drawable.ic_bag_icon),
+        error = painterResource(R.drawable.ic_placeholder),
+        fallback = painterResource(R.drawable.ic_placeholder),
+        contentDescription = null,
+        contentScale = ContentScale.Crop,
+        modifier = Modifier
+            .padding(end = 4.dp)
+            .size(48.dp)
+            .border(
+                width = (1).dp,
+                brush = Brush.linearGradient(
+                    colors = borderColors,
+                    tileMode = TileMode.Decal
+                ),
+                shape = CircleShape
+            )
+            .border(width = 2.dp, color = ComposeColor.White, shape = CircleShape)
+            .clip(CircleShape)
+            .clickable {
+                onClick()
+            }
+    )
+}
+
+@Composable
+fun ProductCategory(selected: Boolean, icon: Any?, title: String, onClick: () -> Unit) {
+    Box(contentAlignment = Center, modifier = Modifier.padding(horizontal = 4.dp)) {
+        Column(horizontalAlignment = CenterHorizontally) {
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(icon)
+                    .crossfade(durationMillis = 250)
+                    .build(),
+                placeholder = painterResource(R.drawable.ic_bag_icon),
+                error = painterResource(R.drawable.ic_bag_icon),
+                fallback = painterResource(R.drawable.ic_bag_icon),
+                contentDescription = null,
+                contentScale = ContentScale.Fit,
+                colorFilter = ColorFilter.tint(
+                    if (selected) colorPrimary else
+                        ComposeColor(0XFF6D6D6D)
+                ),
+                modifier = Modifier
+                    .size(46.dp)
+                    .border(
+                        width = (1).dp,
+                        color = if (selected) colorPrimary else ComposeColor(0xCCFBEAE9),
+                        shape = CircleShape
+                    )
+                    .border(width = 2.dp, color = ComposeColor.White, shape = CircleShape)
+                    .clip(CircleShape)
+                    .background(if (selected) ComposeColor(0XFFFBEAE9) else ComposeColor(0XFFD9D9D9))
+                    .clickable {
+                        onClick()
+                    }
+            )
+
+            Spacer(modifier = Modifier.height(2.dp))
+
+            Text(
+                text = title.take(12) + if (title.length > 12) "..." else "",
+                color = if (selected) colorPrimary else ComposeColor.Gray,
+                style = MaterialTheme.typography.caption,
+                fontWeight = FontWeight.Normal,
+                maxLines = 1,
+            )
         }
-    }*/
+    }
+}
 
-    /*  private fun showErrorDialog(msg: String) {
-          val dialogBinding = ErrorDialogBinding.inflate(LayoutInflater.from(context))
-          val builder = AlertDialog.Builder(context)
-          builder.setView(binding.root)
+@Composable
+fun ProductItem(product: TempProductDtoResultItem, onClick: () -> Unit) {
+    Box(
+        modifier = Modifier
+            .padding(4.dp)
+            .clip(RoundedCornerShape(18.dp))
+            .background(ComposeColor.White)
+            .fillMaxSize()
+            .clickable {
+                // TODO: Remove ripple effect
+                onClick()
+            },
+        contentAlignment = Center
+    ) {
+        Column(
+            modifier = Modifier.padding(8.dp),
+            horizontalAlignment = CenterHorizontally
+        ) {
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(product.image)
+                    .crossfade(durationMillis = 250)
+                    .build(),
+                placeholder = painterResource(R.drawable.ic_bag_icon),
+                error = painterResource(R.drawable.ic_placeholder),
+                fallback = painterResource(R.drawable.ic_bag_icon),
+                contentDescription = null,
+                contentScale = ContentScale.Inside,
+                modifier = Modifier.height(170.dp)
+            )
 
-          val customDialog = AlertDialog.Builder(requireActivity(), 0).create()
+            Text(
+                modifier = Modifier
+                    .padding(start = 4.dp, top = 16.dp)
+                    .fillMaxWidth(),
+                textAlign = TextAlign.Start,
+                text = product.title ?: "Product Name",
+                style = MaterialTheme.typography.body1,
+                maxLines = 1,
+                fontWeight = FontWeight.SemiBold,
+                fontFamily = nunitoFontFamily,
+            )
 
-          customDialog.apply {
-              window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-              setView(dialogBinding.root)
-              setCancelable(false)
-          }.show()
+            Text(
+                modifier = Modifier
+                    .padding(horizontal = 4.dp, vertical = 2.dp)
+                    .fillMaxWidth(),
+                textAlign = TextAlign.Start,
+                color = ComposeColor.Gray,
+                text = "3 Colors",
+                style = MaterialTheme.typography.caption,
+                maxLines = 1,
+                fontFamily = nunitoFontFamily
+            )
 
-          customDialog.apply {
-              setView(dialogBinding.root)
-              setCancelable(false)
-          }.show()
+            Row(
+                modifier = Modifier
+                    .padding(top = 2.dp)
+                    .fillMaxWidth(),
+                verticalAlignment = CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(100))
+                        .background(ComposeColor(0XFFF6F6F6))
+                        .padding(horizontal = 4.dp, vertical = 2.dp),
+                    contentAlignment = Center
+                ) {
+                    Text(
+                        modifier = Modifier
+                            .padding(vertical = 2.dp, horizontal = 4.dp),
+                        text = "$ ${product.price.toString()}",
+                        textAlign = TextAlign.Start,
+                        style = MaterialTheme.typography.body1,
+                        maxLines = 1,
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = nunitoFontFamily,
+                    )
+                }
 
-          dialogBinding.apply {
-              val firstChar = msg[0].uppercaseChar().toString()
-              tvErrorMessage.text = msg.replaceFirst(firstChar, firstChar, true)
+                Icon(
+                    modifier = Modifier
+                        .padding(horizontal = 4.dp)
+                        .size(20.dp)
+                        .clickable {
 
-              btnErrorCancel.setOnClickListener {
-                  customDialog.dismiss()
-                  // TODO: Show a "no data" image on the screen when the dialog exits on an Error state.
-                  //  Hide this image during Loading and Success states.
-              }
-              btnCancelRetry.setOnClickListener {
-                  viewModel.getTempProducts()
-                  customDialog.dismiss()
-              }
-          }
-      }*/
- /*  private fun showErrorDialog(msg: String) {
-          val dialogBinding = ErrorDialogBinding.inflate(LayoutInflater.from(context))
-          val builder = AlertDialog.Builder(context)
-          builder.setView(binding.root)
-
-          val customDialog = AlertDialog.Builder(requireActivity(), 0).create()
-
-          customDialog.apply {
-              window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-              setView(dialogBinding.root)
-              setCancelable(false)
-          }.show()
-
-          customDialog.apply {
-              setView(dialogBinding.root)
-              setCancelable(false)
-          }.show()
-
-          dialogBinding.apply {
-              val firstChar = msg[0].uppercaseChar().toString()
-              tvErrorMessage.text = msg.replaceFirst(firstChar, firstChar, true)
-
-              btnErrorCancel.setOnClickListener {
-                  customDialog.dismiss()
-                  // TODO: Show a "no data" image on the screen when the dialog exits on an Error state.
-                  //  Hide this image during Loading and Success states.
-              }
-              btnCancelRetry.setOnClickListener {
-                  viewModel.getTempProducts()
-                  customDialog.dismiss()
-              }
-          }
-      }*/
- /*  private fun showErrorDialog(msg: String) {
-          val dialogBinding = ErrorDialogBinding.inflate(LayoutInflater.from(context))
-          val builder = AlertDialog.Builder(context)
-          builder.setView(binding.root)
-
-          val customDialog = AlertDialog.Builder(requireActivity(), 0).create()
-
-          customDialog.apply {
-              window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-              setView(dialogBinding.root)
-              setCancelable(false)
-          }.show()
-
-          customDialog.apply {
-              setView(dialogBinding.root)
-              setCancelable(false)
-          }.show()
-
-          dialogBinding.apply {
-              val firstChar = msg[0].uppercaseChar().toString()
-              tvErrorMessage.text = msg.replaceFirst(firstChar, firstChar, true)
-
-              btnErrorCancel.setOnClickListener {
-                  customDialog.dismiss()
-                  // TODO: Show a "no data" image on the screen when the dialog exits on an Error state.
-                  //  Hide this image during Loading and Success states.
-              }
-              btnCancelRetry.setOnClickListener {
-                  viewModel.getTempProducts()
-                  customDialog.dismiss()
-              }
-          }
-      }*/
- /*  private fun showErrorDialog(msg: String) {
-          val dialogBinding = ErrorDialogBinding.inflate(LayoutInflater.from(context))
-          val builder = AlertDialog.Builder(context)
-          builder.setView(binding.root)
-
-          val customDialog = AlertDialog.Builder(requireActivity(), 0).create()
-
-          customDialog.apply {
-              window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-              setView(dialogBinding.root)
-              setCancelable(false)
-          }.show()
-
-          customDialog.apply {
-              setView(dialogBinding.root)
-              setCancelable(false)
-          }.show()
-
-          dialogBinding.apply {
-              val firstChar = msg[0].uppercaseChar().toString()
-              tvErrorMessage.text = msg.replaceFirst(firstChar, firstChar, true)
-
-              btnErrorCancel.setOnClickListener {
-                  customDialog.dismiss()
-                  // TODO: Show a "no data" image on the screen when the dialog exits on an Error state.
-                  //  Hide this image during Loading and Success states.
-              }
-              btnCancelRetry.setOnClickListener {
-                  viewModel.getTempProducts()
-                  customDialog.dismiss()
-              }
-          }
-      }*/
+                        },
+                    painter = painterResource(id = R.drawable.ic_fav_filled),
+                    tint = colorPrimary,
+                    contentDescription = null,
+                )
+            }
+        }
+    }
 }
 
 @Preview
 @Composable
-fun Prev() {
-    Text(text = "Hello XML from Compose!")
+fun ProductItemPreview() {
+    val dummyProduct = TempProductDtoResultItem(
+        0,
+        "Back Pack Pro",
+        125.00,
+        "Bag description here...",
+        "Men",
+        "link",
+        Rating(4.0, 100)
+    )
+
+    LazyVerticalGrid(columns = GridCells.Fixed(2)) {
+        item {
+            ProductItem(product = dummyProduct) {}
+        }
+        item {
+            ProductItem(product = dummyProduct) {}
+        }
+    }
 }
+
+// @Preview(showBackground = true)
+@Composable
+fun CategoryPrev() {
+    GoShoppingTheme {
+        LazyRow(horizontalArrangement = Arrangement.Start) {
+            item {
+                ProductCategory(selected = false, icon = null, title = "Men") {
+
+                }
+            }
+
+            item {
+                ProductCategory(selected = true, icon = null, title = "Jewelery") {
+
+                }
+            }
+
+        }
+
+    }
+}
+
+
+
