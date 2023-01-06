@@ -66,9 +66,17 @@ dependencies {
     def pager_version = '0.23.1'
     implementation "com.google.accompanist:accompanist-pager:$pager_version"
     implementation "com.google.accompanist:accompanist-pager-indicators:$pager_version"
+    implementation "com.google.accompanist:accompanist-systemuicontroller:0.25.1"
 
+    //Rating Bar
+    implementation 'com.github.a914-gowtham:compose-ratingbar:1.2.4'
+
+    // Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:2.5.3"
     implementation "androidx.navigation:navigation-ui-ktx:2.5.3"
+
+    // Palette API
+    implementation "androidx.palette:palette:1.0.0"
 
     //Livedata
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.5.1"
@@ -118,4 +126,3 @@ dependencies {
     // Search Bar Compose
     // implementation 'com.github.Ericgacoki:SearchBarCompose:1.0.5'
 }
-
