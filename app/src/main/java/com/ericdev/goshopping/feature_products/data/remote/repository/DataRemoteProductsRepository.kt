@@ -1,8 +1,8 @@
 package com.ericdev.goshopping.feature_products.data.remote.repository
 
-import com.ericdev.goshopping.feature_products.data.remote.apiservice.ApiService
-import com.ericdev.goshopping.feature_products.data.remote.dto.ProductDtoResult
-import com.ericdev.goshopping.feature_products.data.remote.dto.temp.TempProductDtoResult
+import com.ericdev.goshopping.core.data.remote.apiservice.ApiService
+import com.ericdev.goshopping.core.data.remote.dto.ProductDtoResult
+import com.ericdev.goshopping.core.data.remote.dto.temp.TempProductDtoResult
 import com.ericdev.goshopping.feature_products.domain.repository.RemoteProductsRepository
 import com.ericdev.goshopping.util.Resource
 import retrofit2.HttpException

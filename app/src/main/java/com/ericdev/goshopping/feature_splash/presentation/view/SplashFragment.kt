@@ -35,7 +35,9 @@ class SplashFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.splashGif.let {
-            Glide.with(requireActivity()).load(R.drawable.shopping_gif).into(it)
+            Glide.with(requireActivity())
+                .load(R.drawable.shopping_gif)
+                .into(it)
         }
     }
 

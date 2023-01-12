@@ -1,4 +1,4 @@
-package com.ericdev.goshopping.feature_products.data.remote.dto
+package com.ericdev.goshopping.core.data.remote.dto
 
 import com.google.gson.annotations.SerializedName
 

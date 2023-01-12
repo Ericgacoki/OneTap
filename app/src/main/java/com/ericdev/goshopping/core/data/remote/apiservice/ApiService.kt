@@ -1,7 +1,7 @@
-package com.ericdev.goshopping.feature_products.data.remote.apiservice
+package com.ericdev.goshopping.core.data.remote.apiservice
 
-import com.ericdev.goshopping.feature_products.data.remote.dto.ProductDtoResult
-import com.ericdev.goshopping.feature_products.data.remote.dto.temp.TempProductDtoResult
+import com.ericdev.goshopping.core.data.remote.dto.ProductDtoResult
+import com.ericdev.goshopping.core.data.remote.dto.temp.TempProductDtoResult
 import retrofit2.http.GET
 import retrofit2.http.Query
 

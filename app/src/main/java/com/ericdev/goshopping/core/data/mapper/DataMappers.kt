@@ -1,11 +1,11 @@
-package com.ericdev.goshopping.feature_products.data.mapper
+package com.ericdev.goshopping.core.data.mapper
 
-import com.ericdev.goshopping.feature_products.data.remote.dto.CategoryDto
-import com.ericdev.goshopping.feature_products.data.remote.dto.ColorDto
-import com.ericdev.goshopping.feature_products.data.remote.dto.ProductDto
-import com.ericdev.goshopping.feature_products.domain.model.Category
-import com.ericdev.goshopping.feature_products.domain.model.Color
-import com.ericdev.goshopping.feature_products.domain.model.Product
+import com.ericdev.goshopping.core.data.remote.dto.CategoryDto
+import com.ericdev.goshopping.core.data.remote.dto.ColorDto
+import com.ericdev.goshopping.core.data.remote.dto.ProductDto
+import com.ericdev.goshopping.core.domain.model.Category
+import com.ericdev.goshopping.core.domain.model.Color
+import com.ericdev.goshopping.core.domain.model.Product
 
 object DataMappers {
     internal fun CategoryDto.toCategory(): Category {

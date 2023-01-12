@@ -8,9 +8,9 @@ import androidx.palette.graphics.Palette
 import coil.imageLoader
 import coil.request.ImageRequest
 import coil.request.SuccessResult
-import com.ericdev.goshopping.feature_products.data.mapper.DataMappers.toProduct
-import com.ericdev.goshopping.feature_products.data.remote.dto.temp.TempProductDtoResultItem
-import com.ericdev.goshopping.feature_products.domain.model.Product
+import com.ericdev.goshopping.core.data.mapper.DataMappers.toProduct
+import com.ericdev.goshopping.core.data.remote.dto.temp.TempProductDtoResultItem
+import com.ericdev.goshopping.core.domain.model.Product
 import com.ericdev.goshopping.feature_products.domain.repository.RemoteProductsRepository
 import com.ericdev.goshopping.util.Resource
 import com.google.gson.Gson
@@ -18,7 +18,6 @@ import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.lang.reflect.Type
 import javax.inject.Inject
@@ -52,8 +51,8 @@ class ProductsViewModel @Inject constructor(
 
     init {
         // getAllProducts()
-         getTempProducts()
-        // getSampleProductList()
+        // getTempProducts()
+         getSampleProductList()
     }
 
     fun getTempProducts() {
@@ -90,12 +89,6 @@ class ProductsViewModel @Inject constructor(
             }
         }
     }
-
-
-
-
-
-
 
 
     /**

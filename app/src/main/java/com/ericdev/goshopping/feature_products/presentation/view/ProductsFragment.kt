@@ -1,12 +1,10 @@
 package com.ericdev.goshopping.feature_products.presentation.view
 
 import android.graphics.Color
-import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -36,7 +34,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.layout.ContentScale
@@ -61,8 +58,8 @@ import com.ericdev.goshopping.compose.ui.theme.GoShoppingTheme
 import com.ericdev.goshopping.compose.ui.theme.colorInactive
 import com.ericdev.goshopping.compose.ui.theme.colorPrimary
 import com.ericdev.goshopping.compose.ui.theme.nunitoFontFamily
-import com.ericdev.goshopping.feature_products.data.remote.dto.temp.Rating
-import com.ericdev.goshopping.feature_products.data.remote.dto.temp.TempProductDtoResultItem
+import com.ericdev.goshopping.core.data.remote.dto.temp.Rating
+import com.ericdev.goshopping.core.data.remote.dto.temp.TempProductDtoResultItem
 import com.ericdev.goshopping.feature_products.presentation.viewmodel.ProductsViewModel
 import com.ericdev.goshopping.util.Resource
 import com.google.accompanist.pager.ExperimentalPagerApi

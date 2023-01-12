@@ -12,3 +12,7 @@ local.properties
 /app/src/main/res/drawable/disk.jpg
 /app/src/main/res/drawable/bag.jpg
 /app/src/main/res/drawable/jacket.jpg
+
+
+/app/src/test/java/com/ericdev/goshopping/PasswordValidationTests.kt
+/app/src/test/java/com/ericdev/goshopping/EmailValidationTests.kt
