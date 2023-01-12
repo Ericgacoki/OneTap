@@ -1,9 +1,12 @@
 package com.ericdev.goshopping.di
 
 import android.app.Application
+import androidx.room.Room
+import com.ericdev.goshopping.core.data.local.database.GoShoppingDatabase
+import com.ericdev.goshopping.core.data.remote.apiservice.ApiService
 import com.ericdev.goshopping.feature_onboarding.data.prefs.OnBoardingDataRepository
 import com.ericdev.goshopping.feature_onboarding.domain.repository.OnBoardingRepository
-import com.ericdev.goshopping.core.data.remote.apiservice.ApiService
+import com.ericdev.goshopping.feature_products.data.remote.repository.DataFavoriteProductsRepository
 import com.ericdev.goshopping.feature_products.data.remote.repository.DataRemoteProductsRepository
 import com.ericdev.goshopping.util.Constants.BASE_URL
 import com.google.firebase.auth.FirebaseAuth
@@ -58,6 +61,22 @@ object AppModule {
     @Singleton
     fun providesDataRemoteProductsRepository(apiService: ApiService): DataRemoteProductsRepository {
         return DataRemoteProductsRepository(apiService)
+    }
+
+    @Provides
+    @Singleton
+    fun providesDataFavoriteProductsRepository(database: GoShoppingDatabase): DataFavoriteProductsRepository {
+        return DataFavoriteProductsRepository(database)
+    }
+
+    @Provides
+    @Singleton
+    fun providesGoShoppingDatabase(application: Application): GoShoppingDatabase {
+        return Room.databaseBuilder(
+            application.applicationContext,
+            GoShoppingDatabase::class.java,
+            "go_shopping_database"
+        ).fallbackToDestructiveMigration().build()
     }
 
 }
