@@ -8,23 +8,25 @@ import androidx.palette.graphics.Palette
 import coil.imageLoader
 import coil.request.ImageRequest
 import coil.request.SuccessResult
+import com.ericdev.goshopping.core.data.local.entity.FavoriteProductEntity
 import com.ericdev.goshopping.core.data.mapper.DataMappers.toProduct
 import com.ericdev.goshopping.core.data.remote.dto.temp.TempProductDtoResultItem
 import com.ericdev.goshopping.core.domain.model.Product
+import com.ericdev.goshopping.feature_products.domain.repository.FavoriteProductsRepository
 import com.ericdev.goshopping.feature_products.domain.repository.RemoteProductsRepository
 import com.ericdev.goshopping.util.Resource
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.lang.reflect.Type
 import javax.inject.Inject
 
 @HiltViewModel
 class ProductsViewModel @Inject constructor(
-    private val repository: RemoteProductsRepository,
+    private val remoteProductsRepository: RemoteProductsRepository,
+    private val favoriteProductsRepository: FavoriteProductsRepository,
     private val application: Application
 ) : ViewModel() {
 
@@ -33,6 +35,9 @@ class ProductsViewModel @Inject constructor(
     val tempProductsStateFlow: StateFlow<Resource<List<TempProductDtoResultItem>?>> =
         _tempProductsState
 
+    private var _favoriteProducts: MutableStateFlow<List<FavoriteProductEntity>> =
+        MutableStateFlow(emptyList())
+    val favoriteProducts: Flow<List<FavoriteProductEntity>> = _favoriteProducts
 
     // FIXME: Remove this sample data!
     private fun getSampleProductList() {
@@ -50,16 +55,17 @@ class ProductsViewModel @Inject constructor(
     val currentPalette: StateFlow<Palette?> = _currentImagePalette
 
     init {
+        getAllFavoriteProducts()
         // getAllProducts()
         // getTempProducts()
-         getSampleProductList()
+        getSampleProductList()
     }
 
     fun getTempProducts() {
         _tempProductsState.value = Resource.Loading()
 
         viewModelScope.launch {
-            when (val result = repository.getTempProducts()) {
+            when (val result = remoteProductsRepository.getTempProducts()) {
                 is Resource.Loading -> {
                     _tempProductsState.value = Resource.Loading() // redundant setter
                 }
@@ -72,6 +78,22 @@ class ProductsViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun addProductToFavorite(id: Int) {
+        val entity = FavoriteProductEntity(productId = id)
+        viewModelScope.launch { favoriteProductsRepository.addToFavorite(entity) }
+    }
+
+    fun removeProductToFavorite(id: Int) {
+        val entity = FavoriteProductEntity(productId = id)
+        viewModelScope.launch { favoriteProductsRepository.removeFromFavorite(entity) }
+    }
+
+    private fun getAllFavoriteProducts() {
+        favoriteProductsRepository.getAllFavorite().onEach {
+            _favoriteProducts.value = it
+        }.launchIn(viewModelScope)
     }
 
     fun resolveColorsFromUrl(url: String?) {
@@ -106,7 +128,7 @@ class ProductsViewModel @Inject constructor(
     // TODO("make this public after implementing the new end point")
     private fun getAllProducts() {
         viewModelScope.launch {
-            when (val result = repository.getAllProducts()) {
+            when (val result = remoteProductsRepository.getAllProducts()) {
                 is Resource.Loading -> {
                     _allProductsState.value = Resource.Loading()
                 }
