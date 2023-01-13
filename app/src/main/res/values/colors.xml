@@ -7,9 +7,5 @@
     <color name="color_primary">#E2615B</color>
     <color name="color_button">#E2615B</color>
     <color name="color_input_field">#FBEAE9</color>
-    <color name="color_unselected_item_category">#D9D9D9</color>
-    <color name="color_unselected_item_category_ring">#FBEAE9</color>
-    <color name="color_selected_item_category">#FBEAE9</color>
-    <color name="color_selected_item_category_ring">#E2615B</color>
 
 </resources>

@@ -9,6 +9,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement.Absolute.SpaceBetween
@@ -22,6 +23,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
@@ -48,6 +50,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.ericdev.goshopping.R
@@ -55,20 +58,21 @@ import com.ericdev.goshopping.compose.ui.theme.GoShoppingTheme
 import com.ericdev.goshopping.compose.ui.theme.colorInactive
 import com.ericdev.goshopping.compose.ui.theme.colorPrimary
 import com.ericdev.goshopping.compose.ui.theme.nunitoFontFamily
-import com.ericdev.goshopping.feature_products.data.remote.dto.temp.Rating
-import com.ericdev.goshopping.feature_products.data.remote.dto.temp.TempProductDtoResultItem
+import com.ericdev.goshopping.core.data.remote.dto.temp.Rating
+import com.ericdev.goshopping.core.data.remote.dto.temp.TempProductDtoResultItem
 import com.ericdev.goshopping.feature_products.presentation.viewmodel.ProductsViewModel
 import com.ericdev.goshopping.util.Resource
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.rememberPagerState
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import androidx.compose.ui.graphics.Color as ComposeColor
 
+@Suppress("DEPRECATION")
 class ProductsFragment : Fragment() {
     private val viewModel: ProductsViewModel by activityViewModels()
 
-    @Suppress("DEPRECATION")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -82,35 +86,51 @@ class ProductsFragment : Fragment() {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 GoShoppingTheme {
+
+                    val systemUiController = rememberSystemUiController()
+                    val useDarkIcons = false
+
+                    DisposableEffect(systemUiController, useDarkIcons) {
+                        systemUiController.setStatusBarColor(
+                            color = colorPrimary,
+                            darkIcons = useDarkIcons
+                        )
+
+                        onDispose {}
+                    }
+
                     Scaffold(
                         modifier = Modifier.fillMaxSize(),
                         backgroundColor = ComposeColor(0xFFF7F7F7),
                         topBar = {
-                            Row(
-                                modifier = Modifier
-                                    .padding(8.dp)
-                                    .fillMaxWidth(),
-                                verticalAlignment = CenterVertically,
-                                horizontalArrangement = SpaceBetween
-                            ) {
-                                SearchBarCompose(
+                            AnimatedVisibility(visible = true) {
+                                Row(
                                     modifier = Modifier
-                                        .clip(RoundedCornerShape(100))
-                                        .fillMaxWidth(.80F)
-                                        .background(ComposeColor.White),
-                                    onSearchParamChange = {
-                                        // TODO("Update value in viewModel")
-                                    },
-                                    onSearchClick = {
-                                        // TODO("Perform search event")
-                                    })
+                                        .padding(8.dp)
+                                        .fillMaxWidth(),
+                                    verticalAlignment = CenterVertically,
+                                    horizontalArrangement = SpaceBetween
+                                ) {
+                                    SearchBarCompose(
+                                        modifier = Modifier
+                                            .clip(RoundedCornerShape(100))
+                                            .fillMaxWidth(.80F)
+                                            .background(ComposeColor.White),
+                                        onSearchParamChange = {
+                                            // TODO("Update value in viewModel")
+                                        },
+                                        onSearchClick = {
+                                            // TODO("Perform search event")
+                                        })
 
-                                val link1 =
-                                    "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/XXXTENTACION_mugshot_12_28_2016.jpg/800px-XXXTENTACION_mugshot_12_28_2016.jpg"
-                                val link2 =
-                                    "https://www.vibe.com/wp-content/uploads/2017/09/XXXTentacion-mugshot-orange-county-jail-1504911983-640x5601-1505432825.jpg?w=640&h=511&crop=1"
-                                ProfileImage(link2) {
-                                    // TODO: Navigate to User profile
+                                    // TODO: Replace link with actual user image link
+                                    val link1 =
+                                        "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/XXXTENTACION_mugshot_12_28_2016.jpg/800px-XXXTENTACION_mugshot_12_28_2016.jpg"
+                                    val link2 =
+                                        "https://www.vibe.com/wp-content/uploads/2017/09/XXXTentacion-mugshot-orange-county-jail-1504911983-640x5601-1505432825.jpg?w=640&h=511&crop=1"
+                                    ProfileImage(link2) {
+                                        // TODO: Navigate to User profile
+                                    }
                                 }
                             }
                         },
@@ -121,8 +141,12 @@ class ProductsFragment : Fragment() {
                                 is Resource.Loading -> {
                                     Box(
                                         modifier = Modifier.fillMaxSize(),
-                                        contentAlignment = Alignment.Center
+                                        contentAlignment = Center
                                     ) {
+                                        Icon(
+                                            painter = painterResource(id = R.drawable.ic_bag_icon),
+                                            contentDescription = null
+                                        )
                                         CircularProgressIndicator()
                                     }
                                 }
@@ -165,7 +189,10 @@ class ProductsFragment : Fragment() {
                                             state = rememberLazyGridState()
                                         ) {
                                             item(span = { GridItemSpan(2) }) {
-                                                FeaturedProductsViewPager(featuredProducts)
+                                                FeaturedProductsViewPager(featuredProducts){ product ->
+                                                    viewModel.selectedProductOnNavigation = product
+                                                    findNavController().navigate(R.id.action_productsFragment_to_productDetailsFragment)
+                                                }
                                             }
 
                                             item(span = { GridItemSpan(2) }) {
@@ -177,7 +204,7 @@ class ProductsFragment : Fragment() {
                                                     items(demoCategories) { category ->
                                                         ProductCategory(
                                                             selected = demoSelectedCategoryId == category.id,
-                                                            icon = R.drawable.ic_demo_category,
+                                                            icon = null,
                                                             title = category.title
                                                         ) {
                                                             if (demoSelectedCategoryId != category.id) {
@@ -191,10 +218,19 @@ class ProductsFragment : Fragment() {
                                             items(
                                                 productsState.value.data ?: emptyList()
                                             ) { product ->
-                                                ProductItem(product = product) {
-                                                    // TODO: Navigate to product description
-                                                }
 
+                                                var tempFav by remember { mutableStateOf(false) }
+
+                                                ProductItem(
+                                                    product = product,
+                                                    isFavorite = tempFav,
+                                                    onFavoriteIconClick = {
+                                                        // TODO: Add or Remove from favorites
+                                                        tempFav = tempFav.not()
+                                                    }) {
+                                                    viewModel.selectedProductOnNavigation = product
+                                                    findNavController().navigate(R.id.action_productsFragment_to_productDetailsFragment)
+                                                }
                                             }
                                             item(span = { GridItemSpan(2) }) {
                                                 Spacer(modifier = Modifier.height(50.dp))
@@ -250,7 +286,8 @@ class ProductsFragment : Fragment() {
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun FeaturedProductsViewPager(
-    featuredProducts: ArrayList<TempProductDtoResultItem>
+    featuredProducts: ArrayList<TempProductDtoResultItem>,
+    onNavigate: (product: TempProductDtoResultItem) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -269,7 +306,9 @@ fun FeaturedProductsViewPager(
                     .data(featuredProducts[currentPage].image)
                     .crossfade(true)
                     .build(),
-                placeholder = painterResource(R.drawable.ic_placeholder),
+                placeholder = painterResource(R.drawable.ic_bag_icon),
+                error = painterResource(R.drawable.ic_broken_image),
+                fallback = painterResource(R.drawable.ic_bag_icon_large),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -278,7 +317,7 @@ fun FeaturedProductsViewPager(
                     .height(180.dp)
                     .aspectRatio(1F)
                     .clickable {
-                        // TODO: Navigate to product details
+                       onNavigate(featuredProducts[currentPage])
                     }
             )
         }
@@ -286,7 +325,7 @@ fun FeaturedProductsViewPager(
         HorizontalPagerIndicator(
             pagerState = pagerState,
             modifier = Modifier
-                .align(Alignment.CenterHorizontally)
+                .align(CenterHorizontally)
                 .padding(top = 16.dp),
             activeColor = colorPrimary,
             inactiveColor = colorInactive
@@ -374,16 +413,18 @@ fun SearchBarCompose(
 
 @Composable
 fun ProfileImage(link: String?, onClick: () -> Unit) {
-    val borderColors = listOf(ComposeColor.Red, ComposeColor.Black, ComposeColor.Cyan)
+    // TODO: Get these colors from the image
+    val borderColors =
+        listOf(ComposeColor(0XFFE2AF89), ComposeColor(0XFFC99E59), ComposeColor(0XFF111111))
 
     AsyncImage(
         model = ImageRequest.Builder(LocalContext.current)
             .data(link)
             .crossfade(durationMillis = 250)
             .build(),
-        placeholder = painterResource(R.drawable.ic_bag_icon),
-        error = painterResource(R.drawable.ic_placeholder),
-        fallback = painterResource(R.drawable.ic_placeholder),
+        placeholder = painterResource(R.drawable.ic_person),
+        error = painterResource(R.drawable.ic_broken_image),
+        fallback = painterResource(R.drawable.ic_person),
         contentDescription = null,
         contentScale = ContentScale.Crop,
         modifier = Modifier
@@ -415,10 +456,10 @@ fun ProductCategory(selected: Boolean, icon: Any?, title: String, onClick: () ->
                     .crossfade(durationMillis = 250)
                     .build(),
                 placeholder = painterResource(R.drawable.ic_bag_icon),
-                error = painterResource(R.drawable.ic_bag_icon),
-                fallback = painterResource(R.drawable.ic_bag_icon),
+                error = painterResource(R.drawable.ic_broken_image),
+                fallback = painterResource(R.drawable.ic_person),
                 contentDescription = null,
-                contentScale = ContentScale.Fit,
+                contentScale = ContentScale.Inside,
                 colorFilter = ColorFilter.tint(
                     if (selected) colorPrimary else
                         ComposeColor(0XFF6D6D6D)
@@ -452,7 +493,12 @@ fun ProductCategory(selected: Boolean, icon: Any?, title: String, onClick: () ->
 }
 
 @Composable
-fun ProductItem(product: TempProductDtoResultItem, onClick: () -> Unit) {
+fun ProductItem(
+    product: TempProductDtoResultItem,
+    isFavorite: Boolean,
+    onFavoriteIconClick: () -> Unit,
+    onProductClick: () -> Unit
+) {
     Box(
         modifier = Modifier
             .padding(4.dp)
@@ -460,8 +506,7 @@ fun ProductItem(product: TempProductDtoResultItem, onClick: () -> Unit) {
             .background(ComposeColor.White)
             .fillMaxSize()
             .clickable {
-                // TODO: Remove ripple effect
-                onClick()
+                onProductClick()
             },
         contentAlignment = Center
     ) {
@@ -474,9 +519,9 @@ fun ProductItem(product: TempProductDtoResultItem, onClick: () -> Unit) {
                     .data(product.image)
                     .crossfade(durationMillis = 250)
                     .build(),
-                placeholder = painterResource(R.drawable.ic_bag_icon),
-                error = painterResource(R.drawable.ic_placeholder),
-                fallback = painterResource(R.drawable.ic_bag_icon),
+                placeholder = painterResource(R.drawable.ic_bag_icon_large),
+                error = painterResource(R.drawable.ic_broken_image),
+                fallback = painterResource(R.drawable.ic_bag_icon_large),
                 contentDescription = null,
                 contentScale = ContentScale.Inside,
                 modifier = Modifier.height(170.dp)
@@ -536,11 +581,19 @@ fun ProductItem(product: TempProductDtoResultItem, onClick: () -> Unit) {
                     modifier = Modifier
                         .padding(horizontal = 4.dp)
                         .size(20.dp)
-                        .clickable {
-
+                        .clickable(
+                            enabled = true,
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = rememberRipple(
+                                bounded = false,
+                                radius = 24.dp,
+                                color = colorPrimary
+                            )
+                        ) {
+                            onFavoriteIconClick()
                         },
-                    painter = painterResource(id = R.drawable.ic_fav_filled),
-                    tint = colorPrimary,
+                    painter = painterResource(id = R.drawable.ic_fav_not_filled),
+                    tint = if (isFavorite) colorPrimary else ComposeColor(0XFFD7D7D7),
                     contentDescription = null,
                 )
             }
@@ -548,6 +601,7 @@ fun ProductItem(product: TempProductDtoResultItem, onClick: () -> Unit) {
     }
 }
 
+// TODO: Remove previews before production
 @Preview
 @Composable
 fun ProductItemPreview() {
@@ -563,15 +617,17 @@ fun ProductItemPreview() {
 
     LazyVerticalGrid(columns = GridCells.Fixed(2)) {
         item {
-            ProductItem(product = dummyProduct) {}
+            ProductItem(product = dummyProduct, isFavorite = true, onFavoriteIconClick = {}) {}
         }
         item {
-            ProductItem(product = dummyProduct) {}
+            ProductItem(product = dummyProduct, isFavorite = false, onFavoriteIconClick = {}) {
+
+            }
         }
     }
 }
 
-// @Preview(showBackground = true)
+@Preview(showBackground = true)
 @Composable
 fun CategoryPrev() {
     GoShoppingTheme {
@@ -593,5 +649,12 @@ fun CategoryPrev() {
     }
 }
 
+@Preview(showBackground = true)
+@Composable
+fun ProfileImagePrev() {
+    GoShoppingTheme {
+        ProfileImage("") {
 
-
+        }
+    }
+}
