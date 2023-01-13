@@ -1,6 +1,8 @@
 package com.ericdev.goshopping.di
 
+import com.ericdev.goshopping.feature_products.data.remote.repository.DataFavoriteProductsRepository
 import com.ericdev.goshopping.feature_products.data.remote.repository.DataRemoteProductsRepository
+import com.ericdev.goshopping.feature_products.domain.repository.FavoriteProductsRepository
 import com.ericdev.goshopping.feature_products.domain.repository.RemoteProductsRepository
 import dagger.Binds
 import dagger.Module
@@ -15,4 +17,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindsRemoteDataProductRepository(remoteProductRepository: DataRemoteProductsRepository): RemoteProductsRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindsDataFavoriteProductRepository(favoriteProductRepository: DataFavoriteProductsRepository): FavoriteProductsRepository
 }

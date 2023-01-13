@@ -136,6 +136,8 @@ class ProductsFragment : Fragment() {
                         },
                         content = {
                             val productsState = viewModel.tempProductsStateFlow.collectAsState()
+                            val favoriteProducts =
+                                viewModel.favoriteProducts.collectAsState(emptyList())
 
                             when (productsState.value) {
                                 is Resource.Loading -> {
@@ -189,7 +191,7 @@ class ProductsFragment : Fragment() {
                                             state = rememberLazyGridState()
                                         ) {
                                             item(span = { GridItemSpan(2) }) {
-                                                FeaturedProductsViewPager(featuredProducts){ product ->
+                                                FeaturedProductsViewPager(featuredProducts) { product ->
                                                     viewModel.selectedProductOnNavigation = product
                                                     findNavController().navigate(R.id.action_productsFragment_to_productDetailsFragment)
                                                 }
@@ -218,15 +220,21 @@ class ProductsFragment : Fragment() {
                                             items(
                                                 productsState.value.data ?: emptyList()
                                             ) { product ->
-
-                                                var tempFav by remember { mutableStateOf(false) }
-
+                                                val favorite =
+                                                    favoriteProducts.value.any { fav -> fav.productId == product.id }
                                                 ProductItem(
                                                     product = product,
-                                                    isFavorite = tempFav,
+                                                    isFavorite = favorite,
                                                     onFavoriteIconClick = {
-                                                        // TODO: Add or Remove from favorites
-                                                        tempFav = tempFav.not()
+                                                        if (favorite) {
+                                                            viewModel.removeProductToFavorite(
+                                                                product.id ?: 0
+                                                            )
+                                                        } else {
+                                                            viewModel.addProductToFavorite(
+                                                                product.id ?: 0
+                                                            )
+                                                        }
                                                     }) {
                                                     viewModel.selectedProductOnNavigation = product
                                                     findNavController().navigate(R.id.action_productsFragment_to_productDetailsFragment)
@@ -317,7 +325,7 @@ fun FeaturedProductsViewPager(
                     .height(180.dp)
                     .aspectRatio(1F)
                     .clickable {
-                       onNavigate(featuredProducts[currentPage])
+                        onNavigate(featuredProducts[currentPage])
                     }
             )
         }

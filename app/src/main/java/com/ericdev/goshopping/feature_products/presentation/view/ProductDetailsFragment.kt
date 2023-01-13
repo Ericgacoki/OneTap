@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -63,7 +62,6 @@ class ProductDetailsFragment : Fragment() {
 
     private val viewModel: ProductsViewModel by activityViewModels()
 
-    @OptIn(ExperimentalFoundationApi::class)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -92,6 +90,8 @@ class ProductDetailsFragment : Fragment() {
                     }
 
                     val product = viewModel.selectedProductOnNavigation
+                    val favoriteProducts =
+                        viewModel.favoriteProducts.collectAsState(initial = emptyList())
                     var itemCount by remember { mutableStateOf(1) }
 
                     LazyColumn(
@@ -99,20 +99,31 @@ class ProductDetailsFragment : Fragment() {
                             .fillMaxSize()
                             .background(Color.White)
                     ) {
-                        stickyHeader {
-                            ProductImagesAndPrice(product = product,
-                                palette = palette.value,
-                                onFavoriteIconClick = {
-
-                                },
-                                provideCurrentImageUrl = {
-                                    viewModel.resolveColorsFromUrl(it)
-                                }
-                            )
-                        }
-
                         item {
+                            val favorite =
+                                favoriteProducts.value.any { fav -> fav.productId == product?.id }
                             Column(modifier = Modifier.fillMaxSize()) {
+
+                                ProductImagesAndPrice(
+                                    product = product,
+                                    isFavorite = favorite,
+                                    palette = palette.value,
+                                    onFavoriteIconClick = {
+                                        if (favorite) {
+                                            viewModel.removeProductToFavorite(
+                                                product?.id ?: 0
+                                            )
+                                        } else {
+                                            viewModel.addProductToFavorite(
+                                                product?.id ?: 0
+                                            )
+                                        }
+                                    },
+                                    provideCurrentImageUrl = {
+                                        viewModel.resolveColorsFromUrl(it)
+                                    }
+                                )
+
                                 Text(
                                     modifier = Modifier.padding(
                                         top = 8.dp,
