@@ -6,7 +6,7 @@ import com.ericdev.goshopping.core.data.local.database.GoShoppingDatabase
 import com.ericdev.goshopping.core.data.remote.apiservice.ApiService
 import com.ericdev.goshopping.feature_onboarding.data.prefs.OnBoardingDataRepository
 import com.ericdev.goshopping.feature_onboarding.domain.repository.OnBoardingRepository
-import com.ericdev.goshopping.feature_products.data.remote.repository.DataFavoriteProductsRepository
+import com.ericdev.goshopping.feature_products.data.local.repository.DataFavoriteProductsRepository
 import com.ericdev.goshopping.feature_products.data.remote.repository.DataRemoteProductsRepository
 import com.ericdev.goshopping.util.Constants.BASE_URL
 import com.google.firebase.auth.FirebaseAuth
