@@ -95,7 +95,6 @@ class ProductsFragment : Fragment() {
                             color = colorPrimary,
                             darkIcons = useDarkIcons
                         )
-
                         onDispose {}
                     }
 
