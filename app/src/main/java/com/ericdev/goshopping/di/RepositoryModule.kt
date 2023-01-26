@@ -1,6 +1,6 @@
 package com.ericdev.goshopping.di
 
-import com.ericdev.goshopping.feature_products.data.remote.repository.DataFavoriteProductsRepository
+import com.ericdev.goshopping.feature_products.data.local.repository.DataFavoriteProductsRepository
 import com.ericdev.goshopping.feature_products.data.remote.repository.DataRemoteProductsRepository
 import com.ericdev.goshopping.feature_products.domain.repository.FavoriteProductsRepository
 import com.ericdev.goshopping.feature_products.domain.repository.RemoteProductsRepository

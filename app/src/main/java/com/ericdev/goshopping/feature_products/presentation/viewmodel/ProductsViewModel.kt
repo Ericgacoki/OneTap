@@ -25,9 +25,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProductsViewModel @Inject constructor(
-    private val remoteProductsRepository: RemoteProductsRepository,
-    private val favoriteProductsRepository: FavoriteProductsRepository,
-    private val application: Application
+    private val remoteProductsRepository: RemoteProductsRepository?,
+    private val favoriteProductsRepository: FavoriteProductsRepository?,
+    private val application: Application?
 ) : ViewModel() {
 
     private var _tempProductsState: MutableStateFlow<Resource<List<TempProductDtoResultItem>?>> =
@@ -55,17 +55,17 @@ class ProductsViewModel @Inject constructor(
     val currentPalette: StateFlow<Palette?> = _currentImagePalette
 
     init {
-        getAllFavoriteProducts()
+        // getAllFavoriteProducts()
         // getAllProducts()
-        // getTempProducts()
-        getSampleProductList()
+          getTempProducts()
+        //  getSampleProductList()
     }
 
     fun getTempProducts() {
         _tempProductsState.value = Resource.Loading()
 
         viewModelScope.launch {
-            when (val result = remoteProductsRepository.getTempProducts()) {
+            when (val result = remoteProductsRepository!!.getTempProducts()) {
                 is Resource.Loading -> {
                     _tempProductsState.value = Resource.Loading() // redundant setter
                 }
@@ -82,23 +82,23 @@ class ProductsViewModel @Inject constructor(
 
     fun addProductToFavorite(id: Int) {
         val entity = FavoriteProductEntity(productId = id)
-        viewModelScope.launch { favoriteProductsRepository.addToFavorite(entity) }
+        viewModelScope.launch { favoriteProductsRepository!!.addToFavorite(entity) }
     }
 
     fun removeProductToFavorite(id: Int) {
         val entity = FavoriteProductEntity(productId = id)
-        viewModelScope.launch { favoriteProductsRepository.removeFromFavorite(entity) }
+        viewModelScope.launch { favoriteProductsRepository!!.removeFromFavorite(entity) }
     }
 
     private fun getAllFavoriteProducts() {
-        favoriteProductsRepository.getAllFavorite().onEach {
+        favoriteProductsRepository!!.getAllFavorite().onEach {
             _favoriteProducts.value = it
         }.launchIn(viewModelScope)
     }
 
     fun resolveColorsFromUrl(url: String?) {
         viewModelScope.launch {
-            val req = ImageRequest.Builder(application.applicationContext)
+            val req = ImageRequest.Builder(application!!.applicationContext)
                 .data(url)
                 .allowHardware(false)
                 .build()
@@ -122,16 +122,17 @@ class ProductsViewModel @Inject constructor(
 
     private var _allProductsState: MutableStateFlow<Resource<List<Product>?>> =
         MutableStateFlow(Resource.Loading())
-    private val allProducts: StateFlow<Resource<List<Product>?>> = _allProductsState
+    val allProducts: StateFlow<Resource<List<Product>?>> = _allProductsState
 
 
-    // TODO("make this public after implementing the new end point")
-    private fun getAllProducts() {
+    // TODO("Use this after implementing the new end point")
+    fun getAllProducts() {
         viewModelScope.launch {
-            when (val result = remoteProductsRepository.getAllProducts()) {
+            when (val result = remoteProductsRepository!!.getAllProducts()) {
                 is Resource.Loading -> {
                     _allProductsState.value = Resource.Loading()
                 }
+
                 is Resource.Error -> {
                     _allProductsState.value = Resource.Error(null, result.message!!)
                 }
