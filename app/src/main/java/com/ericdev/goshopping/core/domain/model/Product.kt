@@ -6,7 +6,7 @@ data class Product(
     val description: String,
     val colors: List<Color>,
     val price: Double,
-    val sizes: List<Double>,
+    val sizes: List<String>,
     val rating: Double,
     val images: List<String>,
     val category: Category
