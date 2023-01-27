@@ -56,9 +56,8 @@ class ProductsViewModelTest {
         assertEquals(true, isLoading)
 
         viewModel.getAllProducts()
-
-        withContext(Dispatchers.Default){
-            delay(1) // simulate api delay. I have no idea why this works 🤧
+        withContext(Dispatchers.Default) {
+            delay(100)
         }
 
         val products: Resource<*> = viewModel.allProducts.value
