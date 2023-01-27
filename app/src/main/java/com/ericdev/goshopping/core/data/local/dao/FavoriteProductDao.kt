@@ -1,7 +1,7 @@
 package com.ericdev.goshopping.core.data.local.dao
 
 import androidx.room.*
-import androidx.room.OnConflictStrategy.IGNORE
+import androidx.room.OnConflictStrategy.Companion.IGNORE
 import com.ericdev.goshopping.core.data.local.entity.FavoriteProductEntity
 import kotlinx.coroutines.flow.Flow
 

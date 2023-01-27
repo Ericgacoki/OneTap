@@ -1,4 +1,4 @@
-package com.ericdev.goshopping.feature_products.data.remote.repository
+package com.ericdev.goshopping.feature_products.data.local.repository
 
 import com.ericdev.goshopping.core.data.local.database.GoShoppingDatabase
 import com.ericdev.goshopping.core.data.local.entity.FavoriteProductEntity

@@ -14,7 +14,7 @@ data class ProductDto(
     @SerializedName("price")
     val price: Double?,
     @SerializedName("sizes")
-    val sizes: List<Double>?,
+    val sizes: List<String>?,
     @SerializedName("rating")
     val rating: Double?,
     @SerializedName("images")

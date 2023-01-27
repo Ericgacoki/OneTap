@@ -1,4 +1,4 @@
-package com.ericdev.goshopping
+package com.ericdev.goshopping.feature_auth
 
 import com.ericdev.validitychecker.ValidityChecker
 import org.junit.Test
