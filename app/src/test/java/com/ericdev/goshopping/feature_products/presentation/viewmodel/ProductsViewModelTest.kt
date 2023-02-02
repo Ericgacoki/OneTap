@@ -41,7 +41,10 @@ class ProductsViewModelTest {
         val isLoading = viewModel.tempProductsStateFlow.value is Resource.Loading
         assertEquals(true, isLoading)
 
-        delay(3000) // simulate api delay
+       // simulate api delay
+        withContext(Dispatchers.Default) {
+            delay(1000)
+        }
         val tempProducts = viewModel.tempProductsStateFlow.value
 
         val isSuccess = tempProducts is Resource.Success
