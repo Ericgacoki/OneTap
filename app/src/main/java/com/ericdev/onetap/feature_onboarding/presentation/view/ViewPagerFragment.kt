@@ -49,7 +49,7 @@ class ViewPagerFragment : Fragment() {
             it.adapter = viewPagerAdapter
         }
 
-        TabLayoutMediator(pagerIndicator, viewPager) { tab, position -> }.attach()
+        TabLayoutMediator(pagerIndicator, viewPager) { _, _ -> }.attach()
 
     }
 }

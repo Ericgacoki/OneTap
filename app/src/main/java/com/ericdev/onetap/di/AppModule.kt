@@ -71,7 +71,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun providesGoShoppingDatabase(application: Application): OneTapDatabase {
+    fun providesOneTapDatabase(application: Application): OneTapDatabase {
         return Room.databaseBuilder(
             application.applicationContext,
             OneTapDatabase::class.java,
