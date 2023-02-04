@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/viewPagerFragment"
-        android:name="com.ericdev.goshopping.feature_onboarding.presentation.view.ViewPagerFragment"
+        android:name="com.ericdev.onetap.feature_onboarding.presentation.view.ViewPagerFragment"
         android:label="Viewpager"
         tools:layout="@layout/fragment_viewpager">
         <action
@@ -32,7 +32,7 @@
 
     <fragment
         android:id="@+id/signUpFragment"
-        android:name="com.ericdev.goshopping.feature_auth.feature_sign_up.presentation.view.SignUpFragment"
+        android:name="com.ericdev.onetap.feature_auth.feature_sign_up.presentation.view.SignUpFragment"
         android:label="SignUp"
         tools:layout="@layout/fragment_sign_up">
         <action
@@ -51,7 +51,7 @@
 
     <fragment
         android:id="@+id/logInFragment"
-        android:name="com.ericdev.goshopping.feature_auth.feature_log_in.presentation.view.LogInFragment"
+        android:name="com.ericdev.onetap.feature_auth.feature_log_in.presentation.view.LogInFragment"
         android:label="LogIn"
         tools:layout="@layout/fragment_log_in">
         <action
@@ -70,7 +70,7 @@
 
     <fragment
         android:id="@+id/productsFragment"
-        android:name="com.ericdev.goshopping.feature_products.presentation.view.ProductsFragment"
+        android:name="com.ericdev.onetap.feature_products.presentation.view.ProductsFragment"
         android:label="Products" >
         <action
             android:id="@+id/action_productsFragment_to_productDetailsFragment"
@@ -79,7 +79,7 @@
 
     <fragment
         android:id="@+id/splashFragment"
-        android:name="com.ericdev.goshopping.feature_splash.presentation.view.SplashFragment"
+        android:name="com.ericdev.onetap.feature_splash.presentation.view.SplashFragment"
         tools:layout="@layout/fragment_splash"
         android:label="SplashFragment" >
         <action
@@ -115,6 +115,6 @@
 
     <fragment
         android:id="@+id/productDetailsFragment"
-        android:name="com.ericdev.goshopping.feature_products.presentation.view.ProductDetailsFragment"
+        android:name="com.ericdev.onetap.feature_products.presentation.view.ProductDetailsFragment"
         android:label="ProductDetailsFragment" />
 </navigation>

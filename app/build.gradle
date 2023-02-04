@@ -10,7 +10,7 @@ android {
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.ericdev.goshopping"
+        applicationId "com.ericdev.onetap"
         minSdk 26
         targetSdk 33
         versionCode 1
@@ -39,7 +39,7 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion compose_version
     }
-    namespace 'com.ericdev.goshopping'
+    namespace 'com.ericdev.onetap'
 }
 
 dependencies {

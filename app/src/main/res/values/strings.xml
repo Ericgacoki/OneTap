@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Go Shopping</string>
+    <string name="app_name">OneTap</string>
     <string name="log_in"><u>Log In</u></string>
     <string name="sign_up"><u>Sign Up</u></string>
     <string name="don_t_have_an_account">Don\'t have an account?</string>
