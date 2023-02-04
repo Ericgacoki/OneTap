@@ -1,12 +1,12 @@
 package com.ericdev.onetap.feature_products.data.local.repository
 
-import com.ericdev.onetap.core.data.local.database.GoShoppingDatabase
+import com.ericdev.onetap.core.data.local.database.OneTapDatabase
 import com.ericdev.onetap.core.data.local.entity.FavoriteProductEntity
 import com.ericdev.onetap.feature_products.domain.repository.FavoriteProductsRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class DataFavoriteProductsRepository @Inject constructor(private val database: GoShoppingDatabase) :
+class DataFavoriteProductsRepository @Inject constructor(private val database: OneTapDatabase) :
     FavoriteProductsRepository {
     override suspend fun addToFavorite(entity: FavoriteProductEntity) {
         database.favoriteProductsDao().addToFavorite(entity)

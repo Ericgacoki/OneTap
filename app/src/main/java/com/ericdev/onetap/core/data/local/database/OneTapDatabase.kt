@@ -6,6 +6,6 @@ import com.ericdev.onetap.core.data.local.dao.FavoriteProductDao
 import com.ericdev.onetap.core.data.local.entity.FavoriteProductEntity
 
 @Database(entities = [FavoriteProductEntity::class], version = 1, exportSchema = false)
-abstract class GoShoppingDatabase : RoomDatabase() {
+abstract class OneTapDatabase : RoomDatabase() {
     abstract fun favoriteProductsDao(): FavoriteProductDao
 }

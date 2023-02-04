@@ -2,7 +2,7 @@ package com.ericdev.onetap.di
 
 import android.app.Application
 import androidx.room.Room
-import com.ericdev.onetap.core.data.local.database.GoShoppingDatabase
+import com.ericdev.onetap.core.data.local.database.OneTapDatabase
 import com.ericdev.onetap.core.data.remote.apiservice.ApiService
 import com.ericdev.onetap.feature_onboarding.data.prefs.OnBoardingDataRepository
 import com.ericdev.onetap.feature_onboarding.domain.repository.OnBoardingRepository
@@ -65,18 +65,17 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun providesDataFavoriteProductsRepository(database: GoShoppingDatabase): DataFavoriteProductsRepository {
+    fun providesDataFavoriteProductsRepository(database: OneTapDatabase): DataFavoriteProductsRepository {
         return DataFavoriteProductsRepository(database)
     }
 
     @Provides
     @Singleton
-    fun providesGoShoppingDatabase(application: Application): GoShoppingDatabase {
+    fun providesGoShoppingDatabase(application: Application): OneTapDatabase {
         return Room.databaseBuilder(
             application.applicationContext,
-            GoShoppingDatabase::class.java,
-            "go_shopping_database"
+            OneTapDatabase::class.java,
+            "one_tap_database"
         ).fallbackToDestructiveMigration().build()
     }
-
 }

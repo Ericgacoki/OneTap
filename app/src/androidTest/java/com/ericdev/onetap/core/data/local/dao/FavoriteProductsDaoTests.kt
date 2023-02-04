@@ -5,7 +5,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.asLiveData
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
-import com.ericdev.onetap.core.data.local.database.GoShoppingDatabase
+import com.ericdev.onetap.core.data.local.database.OneTapDatabase
 import com.ericdev.onetap.core.data.local.entity.FavoriteProductEntity
 import com.ericdev.onetap.util.LivedataTestUtil.getValue
 import com.google.common.truth.Truth.assertThat
@@ -17,7 +17,7 @@ import org.junit.Test
 
 class FavoriteProductsDaoTests {
     private lateinit var favoritesDao: FavoriteProductDao
-    private lateinit var database: GoShoppingDatabase
+    private lateinit var database: OneTapDatabase
 
     @get:Rule(order = 0)
     val instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -26,7 +26,7 @@ class FavoriteProductsDaoTests {
     fun createDatabase() {
         val context = ApplicationProvider.getApplicationContext<Context>()
         database = Room
-            .inMemoryDatabaseBuilder(context, GoShoppingDatabase::class.java)
+            .inMemoryDatabaseBuilder(context, OneTapDatabase::class.java)
             .allowMainThreadQueries()
             .build()
 
