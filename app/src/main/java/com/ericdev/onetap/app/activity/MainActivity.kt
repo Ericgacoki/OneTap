@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.ericdev.goshopping.databinding.ActivityMainBinding
+import com.ericdev.onetap.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 import android.R as RC
 
