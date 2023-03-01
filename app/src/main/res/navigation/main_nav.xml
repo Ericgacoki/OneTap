@@ -68,6 +68,25 @@
             app:popUpToInclusive="true" />
     </fragment>
 
+
+    <fragment
+        android:id="@+id/profileScreenFragment"
+        android:name="com.ericdev.onetap.feature_profile.view.ProfileScreenFragment"
+        android:label="Profile">
+        <action
+            android:id="@+id/action_profileScreenFragment_to_profileImageFragment"
+            app:destination="@+id/profileImageFragment"/>
+        <action
+            android:id="@+id/action_profileScreenFragment_to_productsFragment"
+            app:destination="@+id/productsFragment"/>
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/profileImageFragment"
+        android:name="com.ericdev.onetap.feature_profile.view.ProfileImageFragment"
+        android:label="Products" />
+
     <fragment
         android:id="@+id/productsFragment"
         android:name="com.ericdev.onetap.feature_products.presentation.view.ProductsFragment"
@@ -75,6 +94,9 @@
         <action
             android:id="@+id/action_productsFragment_to_productDetailsFragment"
             app:destination="@id/productDetailsFragment" />
+        <action
+            android:id="@+id/action_productsFragment_to_profileScreenFragment"
+            app:destination="@+id/profileScreenFragment"/>
     </fragment>
 
     <fragment
@@ -117,4 +139,9 @@
         android:id="@+id/productDetailsFragment"
         android:name="com.ericdev.onetap.feature_products.presentation.view.ProductDetailsFragment"
         android:label="ProductDetailsFragment" />
+<!--    <fragment-->
+<!--        android:id="@+id/profileScreen"-->
+<!--        android:name="com.ericdev.onetap.ProfileScreen"-->
+<!--        android:label="fragment_profile_screen"-->
+<!--        tools:layout="@layout/fragment_profile_screen" />-->
 </navigation>

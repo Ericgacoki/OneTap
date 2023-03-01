@@ -127,9 +127,10 @@ class ProductsFragment : Fragment() {
                                         "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/XXXTENTACION_mugshot_12_28_2016.jpg/800px-XXXTENTACION_mugshot_12_28_2016.jpg"
                                     val link2 =
                                         "https://www.vibe.com/wp-content/uploads/2017/09/XXXTentacion-mugshot-orange-county-jail-1504911983-640x5601-1505432825.jpg?w=640&h=511&crop=1"
-                                    ProfileImage(link2) {
-                                        // TODO: Navigate to User profile
-                                    }
+                                    ProfileImage(
+                                        link = link2,
+                                        onClick = { findNavController().navigate(R.id.action_productsFragment_to_profileScreenFragment) }
+                                    )
                                 }
                             }
                         },
@@ -250,7 +251,7 @@ class ProductsFragment : Fragment() {
                                         modifier = Modifier
                                             .padding(2.dp)
                                             .fillMaxSize(),
-                                        contentAlignment = Alignment.Center,
+                                        contentAlignment = Center,
                                     ) {
                                         Column(
                                             horizontalAlignment = CenterHorizontally
@@ -419,7 +420,7 @@ fun SearchBarCompose(
 }
 
 @Composable
-fun ProfileImage(link: String?, onClick: () -> Unit) {
+fun ProfileImage(link: String?, onClick: () -> Unit, modifier: Modifier = Modifier) {
     // TODO: Get these colors from the image
     val borderColors =
         listOf(ComposeColor(0XFFE2AF89), ComposeColor(0XFFC99E59), ComposeColor(0XFF111111))
@@ -656,12 +657,12 @@ fun CategoryPrev() {
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun ProfileImagePrev() {
-    OneTapTheme {
-        ProfileImage("") {
-
-        }
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun ProfileImagePrev() {
+//    OneTapTheme {
+//        ProfileImage("") {
+//
+//        }
+//    }
+//}
